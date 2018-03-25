@@ -1,5 +1,9 @@
 package sample;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -17,11 +20,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private Button calculateGradeButton, calculateNecessaryFinalGrade;
+    private FullGradeCalculator fullGradeCalculator;
+    private NecessaryFinalGradeCalculator necessaryFinalGradeCalculator;
     TextField hw, vitamins, projects, midterms, fin, extraCredit, goldPoints, desiredGrade;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("CS61B Grade Calculator");
 
         initCalcGradeButton();
@@ -31,7 +35,7 @@ public class Main extends Application {
 
         AnchorPane layout = initLayout();
 
-        primaryStage.setScene(new Scene(layout, 600, 550));
+        primaryStage.setScene(new Scene(layout, 600, 400));
         primaryStage.show();
     }
 
@@ -80,14 +84,18 @@ public class Main extends Application {
 
         AnchorPane anchorpane = new AnchorPane();
 
-        HBox hb = new HBox();
-        hb.setPadding(new Insets(0, 10, 10, 10));
-        hb.setSpacing(10);
-        hb.getChildren().addAll(calculateGradeButton, calculateNecessaryFinalGrade, desiredGrade);
+        GridPane buttonGrid = new GridPane();
+        buttonGrid.setHgap(10);
+        buttonGrid.setVgap(10);
+        buttonGrid.setPadding(new Insets(0, 10, 0, 10));
 
-        anchorpane.getChildren().addAll(inputGrid, hb);
-        AnchorPane.setBottomAnchor(hb, 8.0);
-        AnchorPane.setRightAnchor(hb, 5.0);
+        buttonGrid.add(calculateGradeButton, 0, 0);
+        buttonGrid.add(calculateNecessaryFinalGrade, 0, 1);
+        buttonGrid.add(desiredGrade, 1, 1);
+
+        anchorpane.getChildren().addAll(inputGrid, buttonGrid);
+        AnchorPane.setBottomAnchor(buttonGrid, 8.0);
+        AnchorPane.setLeftAnchor(buttonGrid, 5.0);
         AnchorPane.setTopAnchor(inputGrid, 10.0);
 
         return anchorpane;
@@ -99,24 +107,38 @@ public class Main extends Application {
     private void initTextFields() {
         hw = new TextField();
         hw.setPromptText("Enter HW/Labs score");
+        hw.setOnMouseClicked(e -> fullGradeCalculator.updateHW(toInt(hw.getText(), 0)));
+        //hw.setOnMouseExited(e -> fullGradeCalculator.updateHW(toInt(hw.getText(), 0)));
 
         vitamins = new TextField();
         vitamins.setPromptText("Enter Vitamins Score");
+        vitamins.setOnAction(e -> fullGradeCalculator.updateVitamins(toInt(vitamins.getText(), 0)));
+        //vitamins.setOnMouseExited(e -> fullGradeCalculator.updateVitamins(toInt(vitamins.getText(), 0)));
 
         projects = new TextField();
         projects.setPromptText("Enter Projects Score");
+        projects.setOnAction(e -> fullGradeCalculator.updateProjects(toInt(projects.getText(), 0)));
+        //projects.setOnMouseExited(e -> fullGradeCalculator.updateProjects(toInt(projects.getText(), 0)));
 
         midterms = new TextField();
         midterms.setPromptText("Enter Midterms Score");
+        midterms.setOnAction(e -> fullGradeCalculator.updateMidterms(toInt(midterms.getText(), 0)));
+        //midterms.setOnMouseExited(e -> fullGradeCalculator.updateMidterms(toInt(midterms.getText(), 0)));
 
         fin = new TextField();
         fin.setPromptText("Enter Final Exam Score");
+        fin.setOnAction(e -> fullGradeCalculator.updateFinal(toInt(fin.getText(), 0)));
+        //fin.setOnMouseExited(e -> fullGradeCalculator.updateMidterms(toInt(fin.getText(), 0)));
 
         extraCredit = new TextField();
         extraCredit.setPromptText("Enter Extra Credit");
+        extraCredit.setOnAction(e -> fullGradeCalculator.updateExtraCredit(toInt(extraCredit.getText(), 0)));
+        //extraCredit.setOnMouseExited(e -> fullGradeCalculator.updateExtraCredit(toInt(extraCredit.getText(), 0)));
 
         goldPoints = new TextField();
         goldPoints.setPromptText("Enter Gold Points");
+        goldPoints.setOnAction(e -> fullGradeCalculator.updateGoldPoints(toInt(goldPoints.getText(), 0)));
+        //goldPoints.setOnMouseExited(e -> fullGradeCalculator.updateGoldPoints(toInt(goldPoints.getText(), 0)));
 
         desiredGrade = new TextField();
         desiredGrade.setPromptText("Enter Desired Grade");
@@ -126,25 +148,69 @@ public class Main extends Application {
      * Initializes the button that calculates the user's grade based on input values.
      */
     private void initCalcGradeButton() {
-        FullGradeCalculator fullGradeCalculator = new FullGradeCalculator();
+        fullGradeCalculator = new FullGradeCalculator();
 
         calculateGradeButton = new Button("Calculate Grade");
         calculateGradeButton.setOnAction(fullGradeCalculator);
-        calculateGradeButton.setTooltip(new Tooltip("Calculate final grade if all values have been provided."));
+        calculateGradeButton.setTooltip(new Tooltip("Calculate final grade. If there is no " +
+                "input, value defaults to 0."));
+        calculateGradeButton.setStyle("-fx-base: #3d9fe5;");
     }
 
     /**
      * Initializes the button that calculates the required grade on the final exam to get the desired grade.
      */
     private void initCalcNecessaryButton() {
-        NecessaryFinalGradeCalculator necessaryFinalGradeCalculator = new NecessaryFinalGradeCalculator();
+        necessaryFinalGradeCalculator = new NecessaryFinalGradeCalculator();
 
-        calculateNecessaryFinalGrade = new Button("Necessary Score on Final to Get ");
+        calculateNecessaryFinalGrade = new Button("Req Final Score ");
         calculateNecessaryFinalGrade.setOnAction(necessaryFinalGradeCalculator);
         calculateNecessaryFinalGrade.setTooltip(new Tooltip("Calculate the necessary score on the final " +
-                "exam to get the input grade"));
+                "exam to get the input grade. Ignores any input for Final score."));
+        calculateNecessaryFinalGrade.setStyle("-fx-base: #3d9fe5;");
     }
 
+    /**
+     * Parse the input string to return the integer inside, or the default value if the input is invalid
+     * @param input Input string to parse
+     * @param defaultVal Default value to return if input is invalid
+     * @return defaultVal if input is invalid, the integer in input otherwise
+     */
+    private int toInt(String input, int defaultVal) {
+        if (input == null || input.isEmpty()) {
+            return defaultVal;
+        }
+        return Integer.parseInt("0" + input.replaceAll("\\D+",""));
+    }
+
+    @Test
+    public void toIntNull() {
+        String in = null;
+        assertEquals(1, toInt(in, 1));
+        assertEquals(0, toInt(in, 0));
+    }
+
+    @Test
+    public void toIntEmpty() {
+        String in = "";
+        assertEquals(1, toInt(in, 1));
+        assertEquals(0, toInt(in, 0));
+    }
+
+    @Test
+    public void toIntTest() {
+        String in = "5";
+        assertEquals(5, toInt(in, 0));
+
+        in = "asdf10";
+        assertEquals(10, toInt(in, 0));
+
+        in = "15asdf]";
+        assertEquals(15, toInt(in, 0));
+
+        in = "asfd20pqoweri";
+        assertEquals(20, toInt(in, 0));
+    }
 
     public static void main(String[] args) {
         launch(args);

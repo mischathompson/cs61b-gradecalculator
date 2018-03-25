@@ -2,8 +2,6 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-import java.util.Currency;
 import java.util.HashMap;
 
 public class FullGradeCalculator implements EventHandler<ActionEvent> {
@@ -71,6 +69,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Homework/Labs", newVal);
     }
@@ -83,6 +82,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Vitamins", newVal);
     }
@@ -95,6 +95,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Projects", newVal);
     }
@@ -107,6 +108,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Midterms", newVal);
     }
@@ -119,6 +121,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Final", newVal);
     }
@@ -131,6 +134,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Extra Credit", newVal);
     }
@@ -143,6 +147,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         if (newVal > threshold) {
             newVal = threshold;
         }
+        System.out.println(newVal);
 
         userValues.put("Gold Points", newVal);
     }
@@ -154,7 +159,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent event) {
-
+        System.out.println(calculateGrade());
     }
 
     /**
@@ -167,10 +172,10 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
 
         for (String curCategory: categories) {
             Integer userValue = userValues.get(curCategory);
-            Integer threshold = categoryThresholds.get(curCategory);
 
             totalPoints += userValue;
         }
+        System.out.println(totalPoints);
 
         //using total points, find correct grade to return
         for (String grade: grades) {
