@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 public class FullGradeCalculatorTests {
     @Test
     public void testARange() {
+        Main m = new Main();
         //test sample A+ scores
-        FullGradeCalculator aPlus = new FullGradeCalculator();
+        Main.FullGradeCalculator aPlus = m.new FullGradeCalculator();
         aPlus.updateHW(256);
         aPlus.updateVitamins(48);
         aPlus.updateProjects(478);
@@ -15,7 +16,7 @@ public class FullGradeCalculatorTests {
         assertEquals("A+", aPlus.calculateGrade());
 
         //test sample A scores
-        FullGradeCalculator a = new FullGradeCalculator();
+        Main.FullGradeCalculator a = m.new FullGradeCalculator();
         a.updateHW(256);
         a.updateVitamins(48);
         a.updateProjects(480);
@@ -24,7 +25,7 @@ public class FullGradeCalculatorTests {
         assertEquals("A", a.calculateGrade());
 
         //test sample A- scores
-        FullGradeCalculator aMinus = new FullGradeCalculator();
+        Main.FullGradeCalculator aMinus = m.new FullGradeCalculator();
         aMinus.updateHW(256);
         aMinus.updateVitamins(48);
         aMinus.updateProjects(480);
@@ -39,8 +40,10 @@ public class FullGradeCalculatorTests {
 
     @Test
     public void testBRange() {
+        Main m = new Main();
+
         //test sample B+ scores
-        FullGradeCalculator bPlus = new FullGradeCalculator();
+        Main.FullGradeCalculator bPlus = m.new FullGradeCalculator();
         bPlus.updateHW(256);
         bPlus.updateVitamins(48);
         bPlus.updateProjects(480);
@@ -49,7 +52,7 @@ public class FullGradeCalculatorTests {
         assertEquals("B+", bPlus.calculateGrade());
 
         //test sample B scores
-        FullGradeCalculator b = new FullGradeCalculator();
+        Main.FullGradeCalculator b = m.new FullGradeCalculator();
         b.updateHW(256);
         b.updateVitamins(48);
         b.updateProjects(480);
@@ -58,7 +61,7 @@ public class FullGradeCalculatorTests {
         assertEquals("B", b.calculateGrade());
 
         //test sample B- scores
-        FullGradeCalculator bMinus = new FullGradeCalculator();
+        Main.FullGradeCalculator bMinus = m.new FullGradeCalculator();
         bMinus.updateHW(256);
         bMinus.updateVitamins(48);
         bMinus.updateProjects(480);
@@ -69,8 +72,10 @@ public class FullGradeCalculatorTests {
 
     @Test
     public void testCRange() {
+        Main m = new Main();
+
         //test sample C+ scores
-        FullGradeCalculator cPlus = new FullGradeCalculator();
+        Main.FullGradeCalculator cPlus = m.new FullGradeCalculator();
         cPlus.updateHW(256);
         cPlus.updateVitamins(48);
         cPlus.updateProjects(480);
@@ -79,7 +84,7 @@ public class FullGradeCalculatorTests {
         assertEquals("C+", cPlus.calculateGrade());
 
         //test sample C scores
-        FullGradeCalculator c = new FullGradeCalculator();
+        Main.FullGradeCalculator c = m.new FullGradeCalculator();
         c.updateHW(256);
         c.updateVitamins(48);
         c.updateProjects(480);
@@ -88,7 +93,7 @@ public class FullGradeCalculatorTests {
         assertEquals("C", c.calculateGrade());
 
         //test sample C- scores
-        FullGradeCalculator cMinus = new FullGradeCalculator();
+        Main.FullGradeCalculator cMinus = m.new FullGradeCalculator();
         cMinus.updateHW(256);
         cMinus.updateVitamins(48);
         cMinus.updateProjects(480);
@@ -104,8 +109,10 @@ public class FullGradeCalculatorTests {
 
     @Test
     public void testDRange() {
+        Main m = new Main();
+
         //test sample D+ scores
-        FullGradeCalculator dPlus = new FullGradeCalculator();
+        Main.FullGradeCalculator dPlus = m.new FullGradeCalculator();
         dPlus.updateHW(256);
         dPlus.updateVitamins(48);
         dPlus.updateProjects(400);
@@ -114,7 +121,7 @@ public class FullGradeCalculatorTests {
         assertEquals("D+", dPlus.calculateGrade());
 
         //test sample D scores
-        FullGradeCalculator d = new FullGradeCalculator();
+        Main.FullGradeCalculator d = m.new FullGradeCalculator();
         d.updateHW(256);
         d.updateVitamins(48);
         d.updateProjects(300);
@@ -123,7 +130,7 @@ public class FullGradeCalculatorTests {
         assertEquals("D", d.calculateGrade());
 
         //test sample D- scores
-        FullGradeCalculator dMinus = new FullGradeCalculator();
+        Main.FullGradeCalculator dMinus = m.new FullGradeCalculator();
         dMinus.updateHW(256);
         dMinus.updateVitamins(48);
         dMinus.updateProjects(200);
@@ -134,7 +141,9 @@ public class FullGradeCalculatorTests {
 
     @Test
     public void testF() {
-        FullGradeCalculator f = new FullGradeCalculator();
+        Main m = new Main();
+
+        Main.FullGradeCalculator f = m.new FullGradeCalculator();
 
         f.updateHW(256);
         f.updateMidterms(50);
@@ -144,7 +153,9 @@ public class FullGradeCalculatorTests {
 
     @Test
     public void testNoArgs() {
-        FullGradeCalculator fullGradeCalculator = new FullGradeCalculator();
+        Main m = new Main();
+
+        Main.FullGradeCalculator fullGradeCalculator = m.new FullGradeCalculator();
 
         assertEquals("F", fullGradeCalculator.calculateGrade());
     }
