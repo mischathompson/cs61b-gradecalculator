@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
@@ -427,6 +428,10 @@ public class Main extends Application {
     }
 
     class ExamSupersession {
+        private TextField mt1Score, mt1Mean, mt1StdDev,
+                mt2Score, mt2Mean, mt2StdDev,
+                finScore, finMean, finStdDev;
+
 
         void displayExamSupersessionWindow() {
             Stage window = new Stage();
@@ -441,100 +446,142 @@ public class Main extends Application {
             window.setScene(scene);
             window.show();
         }
+
+        void calculateExamSupersession() {
+            double F, FSEM1, FSEM2, scoreM1Replaced, scoreM2Replaced, scoreNoReplacements, totalScore;
+            double m1Score = toInt(mt1Score.getText(), 0);
+            double m1Mean = toInt(mt1Mean.getText(), 0);
+            double m1Stddev = toInt(mt1StdDev.getText(), 0);
+
+            double m2Score = toInt(mt2Score.getText(), 0);
+            double m2Mean = toInt(mt2Mean.getText(), 0);
+            double m2Stddev = toInt(mt2StdDev.getText(), 0);
+
+            double finalScore = toInt(finScore.getText(), 0);
+            double finalMean = toInt(finMean.getText(), 0);
+            double finalStddev = toInt(finStdDev.getText(), 0);
+
+            F = (finalScore - finalMean) / finalStddev;
+
+            FSEM1 = m1Stddev * F + m1Mean;
+            FSEM2 = m2Stddev * F + m2Mean;
+            if (FSEM1 > 160) {
+                FSEM1 = 160;
+            }
+            if (FSEM2 > 240) {
+                FSEM2 = 240;
+            }
+
+            scoreM1Replaced = FSEM1 + m2Score + finalScore;
+            scoreM2Replaced = m1Score + FSEM2 + finalScore;
+            scoreNoReplacements = m1Score + m2Score + finalScore;
+
+            if (scoreM1Replaced > scoreM2Replaced && scoreM1Replaced > scoreNoReplacements) {
+                System.out.println("Total score maximized with Midterm 1 Score (" +
+                        m1Score + ") replaced by FSE of (" + FSEM1
+                        + ").\nThis leads to an increase of (" + (scoreM1Replaced - scoreNoReplacements) + ") pts.");
+            } else if (scoreM2Replaced > scoreM1Replaced && scoreM2Replaced > scoreNoReplacements) {
+                System.out.println("Total score maximized with Midterm 2 Score (" +
+                        m2Score + ") replaced by FSE of (" + FSEM2
+                        + ").\nThis leads to an increase of (" + (scoreM2Replaced - scoreNoReplacements) + ") pts.");
+            } else {
+                System.out.println("Exam Supersession will not improve final score.");
+            }
+
+            //totalScore = max(scoreM1Replaced, scoreM2Replaced, scoreNoReplacements);
+        }
+
+        AnchorPane initLayout(Stage window) {
+            Button closeButton = new Button("Close");
+            closeButton.setOnAction(e -> window.close());
+
+            Button calculateButton = new Button("Calculate Supersession");
+            calculateButton.setStyle("-fx-base: #3d9fe5;");
+            calculateButton.setOnAction(e -> calculateExamSupersession());
+
+            mt1Score = new TextField();
+            mt1Score.setPromptText("Enter Midterm 1 Score");
+
+            mt1Mean = new TextField();
+            mt1Mean.setPromptText("Enter Midterm 1 Mean");
+
+            mt1StdDev = new TextField();
+            mt1StdDev.setPromptText("Enter Midterm 1 Std Dev");
+
+            mt2Score = new TextField();
+            mt2Score.setPromptText("Enter Midterm 2 Score");
+
+            mt2Mean = new TextField();
+            mt2Mean.setPromptText("Enter Midterm 2 Mean");
+
+            mt2StdDev = new TextField();
+            mt2StdDev.setPromptText("Enter Midterm 2 Std Dev");
+
+            finScore = new TextField();
+            finScore.setPromptText("Enter Final Exam Score");
+
+            finMean = new TextField();
+            finMean.setPromptText("Enter Final Exam Mean");
+
+            finStdDev = new TextField();
+            finStdDev.setPromptText("Enter Final Exam Std Dev");
+
+            GridPane inputGrid = new GridPane();
+            inputGrid.setHgap(10);
+            inputGrid.setVgap(10);
+            inputGrid.setPadding(new Insets(0, 10, 0, 10));
+
+            Text title = new Text("Scores");
+            title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+            inputGrid.add(title, 0, 0);
+
+            Text mt1ScoreIn = new Text("Midterm 1 Score: ");
+            Text mt1MeanIn = new Text("Midterm 1 Mean: ");
+            Text mt1StdIn = new Text("Midterm 1 Std Dev: ");
+            inputGrid.add(mt1ScoreIn, 1, 1);
+            inputGrid.add(mt1MeanIn, 1, 2);
+            inputGrid.add(mt1StdIn, 1, 3);
+            inputGrid.add(mt1Score, 2, 1);
+            inputGrid.add(mt1Mean, 2, 2);
+            inputGrid.add(mt1StdDev, 2, 3);
+
+            Text mt2ScoreIn = new Text("Midterm 2 Score: ");
+            Text mt2MeanIn = new Text("Midterm 2 Mean: ");
+            Text mt2StdIn = new Text("Midterm 2 Std Dev: ");
+            inputGrid.add(mt2ScoreIn, 1, 5);
+            inputGrid.add(mt2MeanIn, 1, 6);
+            inputGrid.add(mt2StdIn, 1, 7);
+            inputGrid.add(mt2Score, 2, 5);
+            inputGrid.add(mt2Mean, 2, 6);
+            inputGrid.add(mt2StdDev, 2, 7);
+
+            Text finScoreIn = new Text("Final Exam Score: ");
+            Text finMeanIn = new Text("Final Exam Mean: ");
+            Text finStdIn = new Text("Final Exam Std Dev: ");
+            inputGrid.add(finScoreIn, 1, 9);
+            inputGrid.add(finMeanIn, 1, 10);
+            inputGrid.add(finStdIn, 1, 11);
+            inputGrid.add(finScore, 2, 9);
+            inputGrid.add(finMean, 2, 10);
+            inputGrid.add(finStdDev, 2, 11);
+
+
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.getChildren().addAll(closeButton, inputGrid, calculateButton);
+
+            AnchorPane.setBottomAnchor(closeButton, 8.0);
+            AnchorPane.setRightAnchor(closeButton, 5.0);
+            AnchorPane.setTopAnchor(inputGrid, 8.0);
+            AnchorPane.setLeftAnchor(inputGrid, 5.0);
+            AnchorPane.setBottomAnchor(calculateButton, 8.0);
+            AnchorPane.setLeftAnchor(calculateButton, 5.0);
+
+
+            return anchorPane;
+        }
     }
 
-    AnchorPane initLayout(Stage window) {
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());
 
-        Button calculateButton = new Button("Calculate Supersession");
-        calculateButton.setStyle("-fx-base: #3d9fe5;");
-        //calculateButton.setOnAction(e -> calculateExamSupersession());
-
-        TextField mt1Score, mt1Mean, mt1StdDev,
-                  mt2Score, mt2Mean, mt2StdDev,
-                  finScore, finMean, finStdDev;
-
-        mt1Score = new TextField();
-        mt1Score.setPromptText("Enter Midterm 1 Score");
-
-        mt1Mean = new TextField();
-        mt1Mean.setPromptText("Enter Midterm 1 Mean");
-
-        mt1StdDev = new TextField();
-        mt1StdDev.setPromptText("Enter Midterm 1 Std Dev");
-
-        mt2Score = new TextField();
-        mt2Score.setPromptText("Enter Midterm 2 Score");
-
-        mt2Mean = new TextField();
-        mt2Mean.setPromptText("Enter Midterm 2 Mean");
-
-        mt2StdDev = new TextField();
-        mt2StdDev.setPromptText("Enter Midterm 2 Std Dev");
-
-        finScore = new TextField();
-        finScore.setPromptText("Enter Final Exam Score");
-
-        finMean = new TextField();
-        finMean.setPromptText("Enter Final Exam Mean");
-
-        finStdDev = new TextField();
-        finStdDev.setPromptText("Enter Final Exam Std Dev");
-
-        GridPane inputGrid = new GridPane();
-        inputGrid.setHgap(10);
-        inputGrid.setVgap(10);
-        inputGrid.setPadding(new Insets(0, 10, 0, 10));
-
-        Text title = new Text("Scores");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        inputGrid.add(title, 0, 0);
-
-        Text mt1ScoreIn = new Text("Midterm 1 Score: ");
-        Text mt1MeanIn = new Text("Midterm 1 Mean: ");
-        Text mt1StdIn = new Text("Midterm 1 Std Dev: ");
-        inputGrid.add(mt1ScoreIn, 1, 1);
-        inputGrid.add(mt1MeanIn, 1, 2);
-        inputGrid.add(mt1StdIn, 1, 3);
-        inputGrid.add(mt1Score, 2, 1);
-        inputGrid.add(mt1Mean, 2, 2);
-        inputGrid.add(mt1StdDev, 2, 3);
-
-        Text mt2ScoreIn = new Text("Midterm 2 Score: ");
-        Text mt2MeanIn = new Text("Midterm 2 Mean: ");
-        Text mt2StdIn = new Text("Midterm 2 Std Dev: ");
-        inputGrid.add(mt2ScoreIn, 1, 5);
-        inputGrid.add(mt2MeanIn, 1, 6);
-        inputGrid.add(mt2StdIn, 1, 7);
-        inputGrid.add(mt2Score, 2, 5);
-        inputGrid.add(mt2Mean, 2, 6);
-        inputGrid.add(mt2StdDev, 2, 7);
-
-        Text finScoreIn = new Text("Final Exam Score: ");
-        Text finMeanIn = new Text("Final Exam Mean: ");
-        Text finStdIn = new Text("Final Exam Std Dev: ");
-        inputGrid.add(finScoreIn, 1, 9);
-        inputGrid.add(finMeanIn, 1, 10);
-        inputGrid.add(finStdIn, 1, 11);
-        inputGrid.add(finScore, 2, 9);
-        inputGrid.add(finMean, 2, 10);
-        inputGrid.add(finStdDev, 2, 11);
-
-
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(closeButton, inputGrid, calculateButton);
-
-        AnchorPane.setBottomAnchor(closeButton, 8.0);
-        AnchorPane.setRightAnchor(closeButton, 5.0);
-        AnchorPane.setTopAnchor(inputGrid, 8.0);
-        AnchorPane.setLeftAnchor(inputGrid, 5.0);
-        AnchorPane.setBottomAnchor(calculateButton, 8.0);
-        AnchorPane.setLeftAnchor(calculateButton, 5.0);
-
-
-        return anchorPane;
-    }
 
     public static void main(String[] args) {
         launch(args);
