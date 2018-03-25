@@ -11,7 +11,8 @@ public class FullGradeCalculatorTests {
         aPlus.updateHW(256);
         aPlus.updateVitamins(48);
         aPlus.updateProjects(478);
-        aPlus.updateMidterms(378);
+        aPlus.updateMidterm1(160);
+        aPlus.updateMidterm2(218);
         aPlus.updateFinal(390);
         assertEquals("A+", aPlus.calculateGrade());
 
@@ -20,7 +21,8 @@ public class FullGradeCalculatorTests {
         a.updateHW(256);
         a.updateVitamins(48);
         a.updateProjects(480);
-        a.updateMidterms(300);
+        a.updateMidterm1(160);
+        a.updateMidterm2(140);
         a.updateFinal(390);
         assertEquals("A", a.calculateGrade());
 
@@ -29,7 +31,8 @@ public class FullGradeCalculatorTests {
         aMinus.updateHW(256);
         aMinus.updateVitamins(48);
         aMinus.updateProjects(480);
-        aMinus.updateMidterms(300);
+        aMinus.updateMidterm1(160);
+        aMinus.updateMidterm2(140);
         aMinus.updateFinal(389);
         assertEquals("A-", aMinus.calculateGrade());
 
@@ -47,7 +50,8 @@ public class FullGradeCalculatorTests {
         bPlus.updateHW(256);
         bPlus.updateVitamins(48);
         bPlus.updateProjects(480);
-        bPlus.updateMidterms(300);
+        bPlus.updateMidterm1(160);
+        bPlus.updateMidterm2(140);
         bPlus.updateFinal(206);
         assertEquals("B+", bPlus.calculateGrade());
 
@@ -56,7 +60,8 @@ public class FullGradeCalculatorTests {
         b.updateHW(256);
         b.updateVitamins(48);
         b.updateProjects(480);
-        b.updateMidterms(300);
+        b.updateMidterm1(160);
+        b.updateMidterm2(140);
         b.updateFinal(200);
         assertEquals("B", b.calculateGrade());
 
@@ -65,7 +70,8 @@ public class FullGradeCalculatorTests {
         bMinus.updateHW(256);
         bMinus.updateVitamins(48);
         bMinus.updateProjects(480);
-        bMinus.updateMidterms(200);
+        bMinus.updateMidterm1(100);
+        bMinus.updateMidterm2(100);
         bMinus.updateFinal(200);
         assertEquals("B-", bMinus.calculateGrade());
     }
@@ -79,7 +85,8 @@ public class FullGradeCalculatorTests {
         cPlus.updateHW(256);
         cPlus.updateVitamins(48);
         cPlus.updateProjects(480);
-        cPlus.updateMidterms(300);
+        cPlus.updateMidterm1(160);
+        cPlus.updateMidterm2(140);
         cPlus.updateFinal(2);
         assertEquals("C+", cPlus.calculateGrade());
 
@@ -88,7 +95,8 @@ public class FullGradeCalculatorTests {
         c.updateHW(256);
         c.updateVitamins(48);
         c.updateProjects(480);
-        c.updateMidterms(200);
+        c.updateMidterm1(100);
+        c.updateMidterm2(100);
         c.updateFinal(2);
         assertEquals("C", c.calculateGrade());
 
@@ -97,7 +105,8 @@ public class FullGradeCalculatorTests {
         cMinus.updateHW(256);
         cMinus.updateVitamins(48);
         cMinus.updateProjects(480);
-        cMinus.updateMidterms(1);
+        cMinus.updateMidterm1(1);
+        cMinus.updateMidterm2(0);
         cMinus.updateFinal(1);
         assertEquals("C-", cMinus.calculateGrade());
 
@@ -116,7 +125,8 @@ public class FullGradeCalculatorTests {
         dPlus.updateHW(256);
         dPlus.updateVitamins(48);
         dPlus.updateProjects(400);
-        dPlus.updateMidterms(2);
+        dPlus.updateMidterm1(1);
+        dPlus.updateMidterm2(1);
         dPlus.updateFinal(2);
         assertEquals("D+", dPlus.calculateGrade());
 
@@ -125,7 +135,8 @@ public class FullGradeCalculatorTests {
         d.updateHW(256);
         d.updateVitamins(48);
         d.updateProjects(300);
-        d.updateMidterms(2);
+        d.updateMidterm1(1);
+        d.updateMidterm2(1);
         d.updateFinal(2);
         assertEquals("D", d.calculateGrade());
 
@@ -134,7 +145,8 @@ public class FullGradeCalculatorTests {
         dMinus.updateHW(256);
         dMinus.updateVitamins(48);
         dMinus.updateProjects(200);
-        dMinus.updateMidterms(1);
+        dMinus.updateMidterm1(1);
+        dMinus.updateMidterm2(0);
         dMinus.updateFinal(1);
         assertEquals("D-", dMinus.calculateGrade());
     }
@@ -146,7 +158,8 @@ public class FullGradeCalculatorTests {
         Main.FullGradeCalculator f = m.new FullGradeCalculator();
 
         f.updateHW(256);
-        f.updateMidterms(50);
+        f.updateMidterm1(50);
+        f.updateMidterm2(10);
 
         assertEquals("F", f.calculateGrade());
     }

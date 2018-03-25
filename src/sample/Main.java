@@ -2,7 +2,6 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import org.junit.Test;
@@ -29,9 +28,8 @@ public class Main extends Application {
     private Button calculateGradeButton, calculateNecessaryFinalGrade, settings;
     private FullGradeCalculator fullGradeCalculator;
     private NecessaryFinalGradeCalculator necessaryFinalGradeCalculator;
-    private TextField hw, vitamins, projects, midterms, fin, extraCredit, goldPoints, desiredGrade;
+    private TextField hw, vitamins, projects, mt1Score, mt2Score, finScore, extraCredit, goldPoints, desiredGrade;
     private Label calculatedGrade;
-    private boolean emulatingExamSupersession;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -76,21 +74,25 @@ public class Main extends Application {
         inputGrid.add(projects, 1, 3);
         inputGrid.add(this.projects, 2, 3);
 
-        Text midterms = new Text("Midterms: ");
-        inputGrid.add(midterms, 1, 4);
-        inputGrid.add(this.midterms, 2, 4);
+        Text midterm1 = new Text("Midterm 1: ");
+        inputGrid.add(midterm1, 1, 4);
+        inputGrid.add(this.mt1Score, 2, 4);
+
+        Text midterm2 = new Text("Midterm 2: ");
+        inputGrid.add(midterm2, 1, 5);
+        inputGrid.add(this.mt2Score, 2, 5);
 
         Text fin = new Text("Final: ");
-        inputGrid.add(fin, 1, 5);
-        inputGrid.add(this.fin, 2, 5);
+        inputGrid.add(fin, 1, 6);
+        inputGrid.add(this.finScore, 2, 6);
 
         Text extraCredit = new Text("Extra Credit: ");
-        inputGrid.add(extraCredit, 1, 6);
-        inputGrid.add(this.extraCredit, 2, 6);
+        inputGrid.add(extraCredit, 1, 7);
+        inputGrid.add(this.extraCredit, 2, 7);
 
         Text goldPoints = new Text("Gold Points: ");
-        inputGrid.add(goldPoints, 1, 7);
-        inputGrid.add(this.goldPoints, 2, 7);
+        inputGrid.add(goldPoints, 1, 8);
+        inputGrid.add(this.goldPoints, 2, 8);
 
         AnchorPane anchorpane = new AnchorPane();
 
@@ -127,11 +129,14 @@ public class Main extends Application {
         projects = new TextField();
         projects.setPromptText("Enter Projects Score");
 
-        midterms = new TextField();
-        midterms.setPromptText("Enter Midterms Score");
+        mt1Score = new TextField();
+        mt1Score.setPromptText("Enter Midterm 1 Score");
 
-        fin = new TextField();
-        fin.setPromptText("Enter Final Exam Score");
+        mt2Score = new TextField();
+        mt2Score.setPromptText("Enter Midterm 2 Score");
+
+        finScore = new TextField();
+        finScore.setPromptText("Enter Final Exam Score");
 
         extraCredit = new TextField();
         extraCredit.setPromptText("Enter Extra Credit");
@@ -175,8 +180,8 @@ public class Main extends Application {
      * Initializes the settings button to open a new settings window when clicked.
      */
     private void initSettingsButton() {
-        settings = new Button("Settings");
-        settings.setOnAction(e -> new Settings().displaySettingsWindow());
+        settings = new Button("Exam Supersession");
+        settings.setOnAction(e -> new ExamSupersession().displayExamSupersessionWindow());
     }
 
     /**
@@ -240,7 +245,7 @@ public class Main extends Application {
             userValues = new HashMap<>(5);
 
             categories = new String[]
-                    {"Homework/Labs", "Vitamins", "Projects", "Midterms", "Final", "Extra Credit", "Gold Points"};
+                    {"Homework/Labs", "Vitamins", "Projects", "Midterm 1", "Midterm 2", "Final", "Extra Credit", "Gold Points"};
 
             grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
 
@@ -263,7 +268,8 @@ public class Main extends Application {
             categoryThresholds.put("Homework/Labs", 256);
             categoryThresholds.put("Vitamins", 48);
             categoryThresholds.put("Projects", 480);
-            categoryThresholds.put("Midterms", 400);
+            categoryThresholds.put("Midterm 1", 160);
+            categoryThresholds.put("Midterm 2", 240);
             categoryThresholds.put("Final", 400);
             categoryThresholds.put("Extra Credit", 32);
             categoryThresholds.put("Gold Points", 100);
@@ -272,7 +278,8 @@ public class Main extends Application {
             userValues.put("Homework/Labs", 0);
             userValues.put("Vitamins", 0);
             userValues.put("Projects", 0);
-            userValues.put("Midterms", 0);
+            userValues.put("Midterm 1", 0);
+            userValues.put("Midterm 2", 0);
             userValues.put("Final", 0);
             userValues.put("Extra Credit", 0);
             userValues.put("Gold Points", 0);
@@ -294,7 +301,7 @@ public class Main extends Application {
             Integer threshold = categoryThresholds.get("Vitamins");
 
             //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
+            //sets the value to be the max of the Vitamins category
             if (newVal > threshold) {
                 newVal = threshold;
             }
@@ -306,7 +313,7 @@ public class Main extends Application {
             Integer threshold = categoryThresholds.get("Projects");
 
             //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
+            //sets the value to be the max of the Projects category
             if (newVal > threshold) {
                 newVal = threshold;
             }
@@ -314,16 +321,28 @@ public class Main extends Application {
             userValues.put("Projects", newVal);
         }
 
-        void updateMidterms(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Midterms");
+        void updateMidterm1(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Midterm 1");
 
             //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
+            //sets the value to be the max of the Midterm 1 category
             if (newVal > threshold) {
                 newVal = threshold;
             }
 
-            userValues.put("Midterms", newVal);
+            userValues.put("Midterm 1", newVal);
+        }
+
+        void updateMidterm2(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Midterm 2");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the Midterm 2 category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Midterm 2", newVal);
         }
 
         void updateFinal(Integer newVal) {
@@ -372,8 +391,9 @@ public class Main extends Application {
             updateHW(toInt(hw.getText(), 0));
             updateVitamins(toInt(vitamins.getText(), 0));
             updateProjects(toInt(projects.getText(), 0));
-            updateMidterms(toInt(midterms.getText(), 0));
-            updateFinal(toInt(fin.getText(), 0));
+            updateMidterm1(toInt(mt1Score.getText(), 0));
+            updateMidterm2(toInt(mt2Score.getText(), 0));
+            updateFinal(toInt(finScore.getText(), 0));
             updateExtraCredit(toInt(extraCredit.getText(), 0));
             updateGoldPoints(toInt(goldPoints.getText(), 0));
             System.out.println(calculateGrade());
@@ -406,34 +426,114 @@ public class Main extends Application {
 
     }
 
-    class Settings {
+    class ExamSupersession {
 
-        void displaySettingsWindow() {
+        void displayExamSupersessionWindow() {
             Stage window = new Stage();
             window.initModality(Modality.NONE);
 
-            Button closeButton = new Button("Save Settings and Close");
-            closeButton.setOnAction(e -> window.close());
+            AnchorPane anchorPane = initLayout(window);
 
-            CheckBox examSuperSessionCheckBox = new CheckBox("Emulate Exam Supersession");
-            examSuperSessionCheckBox.setSelected(emulatingExamSupersession);
-            examSuperSessionCheckBox.setOnAction(e -> emulatingExamSupersession = !emulatingExamSupersession);
-
-            AnchorPane anchorPane = new AnchorPane();
-            anchorPane.getChildren().addAll(closeButton, examSuperSessionCheckBox);
-
-            AnchorPane.setBottomAnchor(closeButton, 8.0);
-            AnchorPane.setRightAnchor(closeButton, 5.0);
-            AnchorPane.setTopAnchor(examSuperSessionCheckBox, 8.0);
-            AnchorPane.setLeftAnchor(examSuperSessionCheckBox, 5.0);
-
-            window.setTitle("CS61B Grade Calculator Settings");
-            window.setMinHeight(250);
-            window.setMinWidth(250);
-            Scene scene = new Scene(anchorPane, 250, 250);
+            window.setTitle("CS61B Grade Calculator Exam Supersession");
+            window.setMinHeight(500);
+            window.setMinWidth(500);
+            Scene scene = new Scene(anchorPane, 500, 500);
             window.setScene(scene);
             window.show();
         }
+    }
+
+    AnchorPane initLayout(Stage window) {
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> window.close());
+
+        Button calculateButton = new Button("Calculate Supersession");
+        calculateButton.setStyle("-fx-base: #3d9fe5;");
+        //calculateButton.setOnAction(e -> calculateExamSupersession());
+
+        TextField mt1Score, mt1Mean, mt1StdDev,
+                  mt2Score, mt2Mean, mt2StdDev,
+                  finScore, finMean, finStdDev;
+
+        mt1Score = new TextField();
+        mt1Score.setPromptText("Enter Midterm 1 Score");
+
+        mt1Mean = new TextField();
+        mt1Mean.setPromptText("Enter Midterm 1 Mean");
+
+        mt1StdDev = new TextField();
+        mt1StdDev.setPromptText("Enter Midterm 1 Std Dev");
+
+        mt2Score = new TextField();
+        mt2Score.setPromptText("Enter Midterm 2 Score");
+
+        mt2Mean = new TextField();
+        mt2Mean.setPromptText("Enter Midterm 2 Mean");
+
+        mt2StdDev = new TextField();
+        mt2StdDev.setPromptText("Enter Midterm 2 Std Dev");
+
+        finScore = new TextField();
+        finScore.setPromptText("Enter Final Exam Score");
+
+        finMean = new TextField();
+        finMean.setPromptText("Enter Final Exam Mean");
+
+        finStdDev = new TextField();
+        finStdDev.setPromptText("Enter Final Exam Std Dev");
+
+        GridPane inputGrid = new GridPane();
+        inputGrid.setHgap(10);
+        inputGrid.setVgap(10);
+        inputGrid.setPadding(new Insets(0, 10, 0, 10));
+
+        Text title = new Text("Scores");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        inputGrid.add(title, 0, 0);
+
+        Text mt1ScoreIn = new Text("Midterm 1 Score: ");
+        Text mt1MeanIn = new Text("Midterm 1 Mean: ");
+        Text mt1StdIn = new Text("Midterm 1 Std Dev: ");
+        inputGrid.add(mt1ScoreIn, 1, 1);
+        inputGrid.add(mt1MeanIn, 1, 2);
+        inputGrid.add(mt1StdIn, 1, 3);
+        inputGrid.add(mt1Score, 2, 1);
+        inputGrid.add(mt1Mean, 2, 2);
+        inputGrid.add(mt1StdDev, 2, 3);
+
+        Text mt2ScoreIn = new Text("Midterm 2 Score: ");
+        Text mt2MeanIn = new Text("Midterm 2 Mean: ");
+        Text mt2StdIn = new Text("Midterm 2 Std Dev: ");
+        inputGrid.add(mt2ScoreIn, 1, 5);
+        inputGrid.add(mt2MeanIn, 1, 6);
+        inputGrid.add(mt2StdIn, 1, 7);
+        inputGrid.add(mt2Score, 2, 5);
+        inputGrid.add(mt2Mean, 2, 6);
+        inputGrid.add(mt2StdDev, 2, 7);
+
+        Text finScoreIn = new Text("Final Exam Score: ");
+        Text finMeanIn = new Text("Final Exam Mean: ");
+        Text finStdIn = new Text("Final Exam Std Dev: ");
+        inputGrid.add(finScoreIn, 1, 9);
+        inputGrid.add(finMeanIn, 1, 10);
+        inputGrid.add(finStdIn, 1, 11);
+        inputGrid.add(finScore, 2, 9);
+        inputGrid.add(finMean, 2, 10);
+        inputGrid.add(finStdDev, 2, 11);
+
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().addAll(closeButton, inputGrid, calculateButton);
+
+        AnchorPane.setBottomAnchor(closeButton, 8.0);
+        AnchorPane.setRightAnchor(closeButton, 5.0);
+        AnchorPane.setTopAnchor(inputGrid, 8.0);
+        AnchorPane.setLeftAnchor(inputGrid, 5.0);
+        AnchorPane.setBottomAnchor(calculateButton, 8.0);
+        AnchorPane.setLeftAnchor(calculateButton, 5.0);
+
+
+        return anchorPane;
     }
 
     public static void main(String[] args) {
