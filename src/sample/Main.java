@@ -2,6 +2,9 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -23,10 +26,12 @@ import java.util.HashMap;
 
 public class Main extends Application {
 
-    private Button calculateGradeButton, calculateNecessaryFinalGrade;
+    private Button calculateGradeButton, calculateNecessaryFinalGrade, settings;
     private FullGradeCalculator fullGradeCalculator;
     private NecessaryFinalGradeCalculator necessaryFinalGradeCalculator;
-    TextField hw, vitamins, projects, midterms, fin, extraCredit, goldPoints, desiredGrade;
+    private TextField hw, vitamins, projects, midterms, fin, extraCredit, goldPoints, desiredGrade;
+    private Label calculatedGrade;
+    private boolean emulatingExamSupersession;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,6 +39,7 @@ public class Main extends Application {
 
         initCalcGradeButton();
         initCalcNecessaryButton();
+        initSettingsButton();
         initTextFields();
         initLayout();
 
@@ -97,9 +103,11 @@ public class Main extends Application {
         buttonGrid.add(calculateNecessaryFinalGrade, 0, 1);
         buttonGrid.add(desiredGrade, 1, 1);
 
-        anchorpane.getChildren().addAll(inputGrid, buttonGrid);
+        anchorpane.getChildren().addAll(inputGrid, buttonGrid, settings);
         AnchorPane.setBottomAnchor(buttonGrid, 8.0);
         AnchorPane.setLeftAnchor(buttonGrid, 5.0);
+        AnchorPane.setBottomAnchor(settings, 8.0);
+        AnchorPane.setRightAnchor(settings, 5.0);
         AnchorPane.setTopAnchor(inputGrid, 10.0);
 
         return anchorpane;
@@ -107,6 +115,7 @@ public class Main extends Application {
 
     /**
      * Initializes the TextFields for user input.
+     * Sets the prompt text for each field.
      */
     private void initTextFields() {
         hw = new TextField();
@@ -136,6 +145,7 @@ public class Main extends Application {
 
     /**
      * Initializes the button that calculates the user's grade based on input values.
+     * Sets the text, EventHandler, tooltip, and color of the button.
      */
     private void initCalcGradeButton() {
         fullGradeCalculator = new FullGradeCalculator();
@@ -149,6 +159,7 @@ public class Main extends Application {
 
     /**
      * Initializes the button that calculates the required grade on the final exam to get the desired grade.
+     * Sets the text, EventHandler, tooltip, and color of the button.
      */
     private void initCalcNecessaryButton() {
         necessaryFinalGradeCalculator = new NecessaryFinalGradeCalculator();
@@ -161,7 +172,15 @@ public class Main extends Application {
     }
 
     /**
-     * Parse the input string to return the integer inside, or the default value if the input is invalid
+     * Initializes the settings button to open a new settings window when clicked.
+     */
+    private void initSettingsButton() {
+        settings = new Button("Settings");
+        settings.setOnAction(e -> new Settings().displaySettingsWindow());
+    }
+
+    /**
+     * Parse the input string to return the integer inside, or the default value if the input is invalid.
      * @param input Input string to parse
      * @param defaultVal Default value to return if input is invalid
      * @return defaultVal if input is invalid, the integer in input otherwise
@@ -202,7 +221,7 @@ public class Main extends Application {
         assertEquals(20, toInt(in, 0));
     }
 
-    public class FullGradeCalculator implements EventHandler<ActionEvent> {
+    class FullGradeCalculator implements EventHandler<ActionEvent> {
         private HashMap<String, Integer> gradeThresholds;
         private HashMap<String, Integer> categoryThresholds;
         private String[] categories;
@@ -345,7 +364,7 @@ public class Main extends Application {
 
         /**
          * Calculates the user's final grade, using the values provided.
-         * If any
+         * Any values not provided, or that are invalid, default to 0.
          * @param event The event received from clicking the 'Calculate Grade' button
          */
         @Override
@@ -385,6 +404,36 @@ public class Main extends Application {
             return null;
         }
 
+    }
+
+    class Settings {
+
+        void displaySettingsWindow() {
+            Stage window = new Stage();
+            window.initModality(Modality.NONE);
+
+            Button closeButton = new Button("Save Settings and Close");
+            closeButton.setOnAction(e -> window.close());
+
+            CheckBox examSuperSessionCheckBox = new CheckBox("Emulate Exam Supersession");
+            examSuperSessionCheckBox.setSelected(emulatingExamSupersession);
+            examSuperSessionCheckBox.setOnAction(e -> emulatingExamSupersession = !emulatingExamSupersession);
+
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.getChildren().addAll(closeButton, examSuperSessionCheckBox);
+
+            AnchorPane.setBottomAnchor(closeButton, 8.0);
+            AnchorPane.setRightAnchor(closeButton, 5.0);
+            AnchorPane.setTopAnchor(examSuperSessionCheckBox, 8.0);
+            AnchorPane.setLeftAnchor(examSuperSessionCheckBox, 5.0);
+
+            window.setTitle("CS61B Grade Calculator Settings");
+            window.setMinHeight(250);
+            window.setMinWidth(250);
+            Scene scene = new Scene(anchorPane, 250, 250);
+            window.setScene(scene);
+            window.show();
+        }
     }
 
     public static void main(String[] args) {
