@@ -24,11 +24,9 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
         categoryThresholds = new HashMap<>(5);
         userValues = new HashMap<>(5);
 
-        //initialize grading categories
         categories = new String[]
                 {"Homework/Labs", "Vitamins", "Projects", "Midterms", "Final", "Extra Credit", "Gold Points"};
 
-        //initialize grades
         grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
 
         //add Spring 2018's grade thresholds
@@ -68,7 +66,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
     void updateHW(Integer newVal) {
         Integer threshold = categoryThresholds.get("Homework/Labs");
 
-        //check whether user entered valid point value. If not
+        //check whether user entered valid point value. If not,
         //sets the value to be the max of the HW category
         if (newVal > threshold) {
             newVal = threshold;
@@ -156,7 +154,7 @@ public class FullGradeCalculator implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent event) {
-        System.out.println("Final Grade: " + calculateGrade());
+
     }
 
     /**
