@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -16,6 +18,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.HashMap;
 
 public class Main extends Application {
 
@@ -107,38 +111,24 @@ public class Main extends Application {
     private void initTextFields() {
         hw = new TextField();
         hw.setPromptText("Enter HW/Labs score");
-        hw.setOnMouseClicked(e -> fullGradeCalculator.updateHW(toInt(hw.getText(), 0)));
-        //hw.setOnMouseExited(e -> fullGradeCalculator.updateHW(toInt(hw.getText(), 0)));
 
         vitamins = new TextField();
         vitamins.setPromptText("Enter Vitamins Score");
-        vitamins.setOnAction(e -> fullGradeCalculator.updateVitamins(toInt(vitamins.getText(), 0)));
-        //vitamins.setOnMouseExited(e -> fullGradeCalculator.updateVitamins(toInt(vitamins.getText(), 0)));
 
         projects = new TextField();
         projects.setPromptText("Enter Projects Score");
-        projects.setOnAction(e -> fullGradeCalculator.updateProjects(toInt(projects.getText(), 0)));
-        //projects.setOnMouseExited(e -> fullGradeCalculator.updateProjects(toInt(projects.getText(), 0)));
 
         midterms = new TextField();
         midterms.setPromptText("Enter Midterms Score");
-        midterms.setOnAction(e -> fullGradeCalculator.updateMidterms(toInt(midterms.getText(), 0)));
-        //midterms.setOnMouseExited(e -> fullGradeCalculator.updateMidterms(toInt(midterms.getText(), 0)));
 
         fin = new TextField();
         fin.setPromptText("Enter Final Exam Score");
-        fin.setOnAction(e -> fullGradeCalculator.updateFinal(toInt(fin.getText(), 0)));
-        //fin.setOnMouseExited(e -> fullGradeCalculator.updateMidterms(toInt(fin.getText(), 0)));
 
         extraCredit = new TextField();
         extraCredit.setPromptText("Enter Extra Credit");
-        extraCredit.setOnAction(e -> fullGradeCalculator.updateExtraCredit(toInt(extraCredit.getText(), 0)));
-        //extraCredit.setOnMouseExited(e -> fullGradeCalculator.updateExtraCredit(toInt(extraCredit.getText(), 0)));
 
         goldPoints = new TextField();
         goldPoints.setPromptText("Enter Gold Points");
-        goldPoints.setOnAction(e -> fullGradeCalculator.updateGoldPoints(toInt(goldPoints.getText(), 0)));
-        //goldPoints.setOnMouseExited(e -> fullGradeCalculator.updateGoldPoints(toInt(goldPoints.getText(), 0)));
 
         desiredGrade = new TextField();
         desiredGrade.setPromptText("Enter Desired Grade");
@@ -210,6 +200,191 @@ public class Main extends Application {
 
         in = "asfd20pqoweri";
         assertEquals(20, toInt(in, 0));
+    }
+
+    public class FullGradeCalculator implements EventHandler<ActionEvent> {
+        private HashMap<String, Integer> gradeThresholds;
+        private HashMap<String, Integer> categoryThresholds;
+        private String[] categories;
+        private String[] grades;
+
+        private HashMap<String, Integer> userValues;
+
+        /**
+         * Initializes the thresholds for each grade as well
+         * as number of points in each grading category,
+         * using Spring 2018 values.
+         */
+        FullGradeCalculator() {
+            gradeThresholds = new HashMap<>(13);
+            categoryThresholds = new HashMap<>(5);
+            userValues = new HashMap<>(5);
+
+            categories = new String[]
+                    {"Homework/Labs", "Vitamins", "Projects", "Midterms", "Final", "Extra Credit", "Gold Points"};
+
+            grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
+
+            //add Spring 2018's grade thresholds
+            gradeThresholds.put("A+", 1550);
+            gradeThresholds.put("A", 1474);
+            gradeThresholds.put("A-", 1393);
+            gradeThresholds.put("B+", 1290);
+            gradeThresholds.put("B", 1195);
+            gradeThresholds.put("B-", 1145);
+            gradeThresholds.put("C+", 1050);
+            gradeThresholds.put("C", 925);
+            gradeThresholds.put("C-", 744);
+            gradeThresholds.put("D+", 646);
+            gradeThresholds.put("D", 544);
+            gradeThresholds.put("D-", 400);
+            gradeThresholds.put("F", 0);
+
+            //add Spring 2018's category values
+            categoryThresholds.put("Homework/Labs", 256);
+            categoryThresholds.put("Vitamins", 48);
+            categoryThresholds.put("Projects", 480);
+            categoryThresholds.put("Midterms", 400);
+            categoryThresholds.put("Final", 400);
+            categoryThresholds.put("Extra Credit", 32);
+            categoryThresholds.put("Gold Points", 100);
+
+            //initializes user's grade values to 0
+            userValues.put("Homework/Labs", 0);
+            userValues.put("Vitamins", 0);
+            userValues.put("Projects", 0);
+            userValues.put("Midterms", 0);
+            userValues.put("Final", 0);
+            userValues.put("Extra Credit", 0);
+            userValues.put("Gold Points", 0);
+        }
+
+        void updateHW(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Homework/Labs");
+
+            //check whether user entered valid point value. If not,
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Homework/Labs", newVal);
+        }
+
+        void updateVitamins(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Vitamins");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Vitamins", newVal);
+        }
+
+        void updateProjects(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Projects");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Projects", newVal);
+        }
+
+        void updateMidterms(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Midterms");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Midterms", newVal);
+        }
+
+        void updateFinal(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Final");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Final", newVal);
+        }
+
+        void updateExtraCredit(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Extra Credit");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Extra Credit", newVal);
+        }
+
+        void updateGoldPoints(Integer newVal) {
+            Integer threshold = categoryThresholds.get("Gold Points");
+
+            //check whether user entered valid point value. If not
+            //sets the value to be the max of the HW category
+            if (newVal > threshold) {
+                newVal = threshold;
+            }
+
+            userValues.put("Gold Points", newVal);
+        }
+
+        /**
+         * Calculates the user's final grade, using the values provided.
+         * If any
+         * @param event The event received from clicking the 'Calculate Grade' button
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            updateHW(toInt(hw.getText(), 0));
+            updateVitamins(toInt(vitamins.getText(), 0));
+            updateProjects(toInt(projects.getText(), 0));
+            updateMidterms(toInt(midterms.getText(), 0));
+            updateFinal(toInt(fin.getText(), 0));
+            updateExtraCredit(toInt(extraCredit.getText(), 0));
+            updateGoldPoints(toInt(goldPoints.getText(), 0));
+            System.out.println(calculateGrade());
+        }
+
+        /**
+         * Calculates the user's grade based on values provided for each category
+         * (these are initialized to 0).
+         * @return The letter grade the user will receive
+         */
+        String calculateGrade() {
+            int totalPoints = 0;
+
+            for (String curCategory: categories) {
+                Integer userValue = userValues.get(curCategory);
+
+                totalPoints += userValue;
+            }
+            System.out.println(totalPoints);
+
+            //using total points, find correct grade to return
+            for (String grade: grades) {
+                if (totalPoints >= gradeThresholds.get(grade)) {
+                    return grade;
+                }
+            }
+
+            return null;
+        }
+
     }
 
     public static void main(String[] args) {
