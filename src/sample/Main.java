@@ -32,8 +32,59 @@ public class Main extends Application {
     private TextField hw, vitamins, projects, mt1Score, mt2Score, finScore, extraCredit, goldPoints, desiredGrade;
     private Label calculatedGrade;
 
+    private static HashMap<String, Integer> gradeThresholds = new HashMap<>(13);
+    private static HashMap<String, Integer> categoryThresholds = new HashMap<>(5);
+    private static HashMap<String, Integer> userValues = new HashMap<>(5);
+
+    private static final String[] categories = new String[]
+    {"Homework/Labs", "Vitamins", "Projects", "Midterm 1", "Midterm 2", "Final", "Extra Credit", "Gold Points"};
+
+    private static final String[] grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
+
+    /*
+     * Initializes the thresholds for each grade as well
+     * as number of points in each grading category,
+     * using Spring 2018 values.
+     */
+    static {
+        //add Spring 2018's grade thresholds
+        gradeThresholds.put("A+", 1550);
+        gradeThresholds.put("A", 1474);
+        gradeThresholds.put("A-", 1393);
+        gradeThresholds.put("B+", 1290);
+        gradeThresholds.put("B", 1195);
+        gradeThresholds.put("B-", 1145);
+        gradeThresholds.put("C+", 1050);
+        gradeThresholds.put("C", 925);
+        gradeThresholds.put("C-", 744);
+        gradeThresholds.put("D+", 646);
+        gradeThresholds.put("D", 544);
+        gradeThresholds.put("D-", 400);
+        gradeThresholds.put("F", 0);
+
+        //add Spring 2018's category thresholds
+        categoryThresholds.put("Homework/Labs", 256);
+        categoryThresholds.put("Vitamins", 48);
+        categoryThresholds.put("Projects", 480);
+        categoryThresholds.put("Midterm 1", 160);
+        categoryThresholds.put("Midterm 2", 240);
+        categoryThresholds.put("Final", 400);
+        categoryThresholds.put("Extra Credit", 32);
+        categoryThresholds.put("Gold Points", 100);
+
+        //initializes user's grade values to 0
+        userValues.put("Homework/Labs", 0);
+        userValues.put("Vitamins", 0);
+        userValues.put("Projects", 0);
+        userValues.put("Midterm 1", 0);
+        userValues.put("Midterm 2", 0);
+        userValues.put("Final", 0);
+        userValues.put("Extra Credit", 0);
+        userValues.put("Gold Points", 0);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("CS61B Grade Calculator");
 
         initCalcGradeButton();
@@ -228,63 +279,6 @@ public class Main extends Application {
     }
 
     class FullGradeCalculator implements EventHandler<ActionEvent> {
-        private HashMap<String, Integer> gradeThresholds;
-        private HashMap<String, Integer> categoryThresholds;
-        private String[] categories;
-        private String[] grades;
-
-        private HashMap<String, Integer> userValues;
-
-        /**
-         * Initializes the thresholds for each grade as well
-         * as number of points in each grading category,
-         * using Spring 2018 values.
-         */
-        FullGradeCalculator() {
-            gradeThresholds = new HashMap<>(13);
-            categoryThresholds = new HashMap<>(5);
-            userValues = new HashMap<>(5);
-
-            categories = new String[]
-                    {"Homework/Labs", "Vitamins", "Projects", "Midterm 1", "Midterm 2", "Final", "Extra Credit", "Gold Points"};
-
-            grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
-
-            //add Spring 2018's grade thresholds
-            gradeThresholds.put("A+", 1550);
-            gradeThresholds.put("A", 1474);
-            gradeThresholds.put("A-", 1393);
-            gradeThresholds.put("B+", 1290);
-            gradeThresholds.put("B", 1195);
-            gradeThresholds.put("B-", 1145);
-            gradeThresholds.put("C+", 1050);
-            gradeThresholds.put("C", 925);
-            gradeThresholds.put("C-", 744);
-            gradeThresholds.put("D+", 646);
-            gradeThresholds.put("D", 544);
-            gradeThresholds.put("D-", 400);
-            gradeThresholds.put("F", 0);
-
-            //add Spring 2018's category values
-            categoryThresholds.put("Homework/Labs", 256);
-            categoryThresholds.put("Vitamins", 48);
-            categoryThresholds.put("Projects", 480);
-            categoryThresholds.put("Midterm 1", 160);
-            categoryThresholds.put("Midterm 2", 240);
-            categoryThresholds.put("Final", 400);
-            categoryThresholds.put("Extra Credit", 32);
-            categoryThresholds.put("Gold Points", 100);
-
-            //initializes user's grade values to 0
-            userValues.put("Homework/Labs", 0);
-            userValues.put("Vitamins", 0);
-            userValues.put("Projects", 0);
-            userValues.put("Midterm 1", 0);
-            userValues.put("Midterm 2", 0);
-            userValues.put("Final", 0);
-            userValues.put("Extra Credit", 0);
-            userValues.put("Gold Points", 0);
-        }
 
         void updateHW(Integer newVal) {
             Integer threshold = categoryThresholds.get("Homework/Labs");
