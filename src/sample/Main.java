@@ -164,7 +164,7 @@ public class Main extends Application {
         buttonGrid.add(new Text(" to get a(n) "), 1, 1);
         buttonGrid.add(desiredGrade, 2, 1);
 
-        calculation = new Text("DEFAULT");
+        calculation = new Text();
         calculation.setFont(Font.font("Arial"));
 
         anchorpane.getChildren().addAll(inputGrid, buttonGrid, examSupersessionButton, calculation);
@@ -406,8 +406,7 @@ public class Main extends Application {
         @Override
         public void handle(ActionEvent event) {
             updateAllValues();
-            System.out.println(calculateGrade());
-            //calculateGrade();
+            calculateGrade();
         }
 
         /**
@@ -614,7 +613,7 @@ public class Main extends Application {
                 return -1;
             }
             int desiredGradeThreshold = gradeThresholds.get(desiredGrade.getText());
-            /*double maxExamScore = 0;
+            double maxExamScore = 0;
             double mt1Score, mt2Score, projectsScore, hwScore, vitaminsScore, goldPoints, extraCredit;
             mt1Score = userValues.get("Midterm 1");
             mt2Score = userValues.get("Midterm 2");
@@ -636,22 +635,16 @@ public class Main extends Application {
                     - hwScore - projectsScore - extraCredit - mt1Score - mt2Score - vitaminsScore)
                     + 2 * goldPoints * (mt1Score + mt2Score);
             double denom = maxExamScore - 2 * goldPoints;
-
-            System.out.println(numerator / denom);
-            return numerator / denom;*/
-            int totalScore = calculateTotalScore() - userValues.get("Final");
-            int diff = desiredGradeThreshold - totalScore;
-            System.out.println(desiredGradeThreshold - totalScore);
-            calculation.setText("");
-            if (diff <= 0) {
-                diff = -diff;
-                calculation.setText("Congrats, you are already the " + desiredGrade.getText() + " threshold\nby (" +
-                        diff + ") pts!");
+            double necessaryFinalScore = numerator / denom;
+            if (necessaryFinalScore <= 0) {
+                calculation.setText("Congratulations, you are already\npast the " + desiredGrade.getText() + " threshold!");
             } else {
-                calculation.setText("You need to get at least (" + diff + ") pts on the\n" +
+                int ceilingScore = (int) Math.ceil(necessaryFinalScore);
+                calculation.setText("You need to get at least (" + ceilingScore + ")\npts on the " +
                         "Final to get a(n) " + desiredGrade.getText());
             }
-            return desiredGradeThreshold - totalScore;
+
+            return numerator / denom;
         }
     }
 
