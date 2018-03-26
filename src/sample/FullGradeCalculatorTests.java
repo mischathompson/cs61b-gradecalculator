@@ -3,7 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class FullGradeCalculatorTests {
-    @Test
+    /*@Test
     public void testARange() {
         Main m = new Main();
         //test sample A+ scores
@@ -171,5 +171,5 @@ public class FullGradeCalculatorTests {
         Main.FullGradeCalculator fullGradeCalculator = m.new FullGradeCalculator();
 
         assertEquals("F", fullGradeCalculator.calculateGrade());
-    }
+    }*/
 }

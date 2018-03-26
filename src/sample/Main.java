@@ -35,7 +35,8 @@ public class Main extends Application {
     private static final String[] categories = new String[]
     {"Homework/Labs", "Vitamins", "Projects", "Midterm 1", "Midterm 2", "Final", "Extra Credit", "Gold Points"};
 
-    private static final String[] grades = new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
+    private static final String[] grades =
+            new String[]{"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"};
 
     /*
      * Initializes the thresholds for each grade as well
@@ -244,6 +245,113 @@ public class Main extends Application {
                 "might affect certain exam scores."));
     }
 
+    private void updateAllValues() {
+        updateHW(toInt(hw.getText(), 0));
+        updateVitamins(toInt(vitamins.getText(), 0));
+        updateProjects(toInt(projects.getText(), 0));
+        updateMidterm1(toInt(mt1Score.getText(), 0));
+        updateMidterm2(toInt(mt2Score.getText(), 0));
+        updateFinal(toInt(finScore.getText(), 0));
+        updateExtraCredit(toInt(extraCredit.getText(), 0));
+        updateGoldPoints(toInt(goldPoints.getText(), 0));
+    }
+
+    private void updateHW(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Homework/Labs");
+
+        //check whether user entered valid point value. If not,
+        //sets the value to be the max of the HW category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Homework/Labs", newVal);
+    }
+
+    private void updateVitamins(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Vitamins");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the Vitamins category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Vitamins", newVal);
+    }
+
+    private void updateProjects(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Projects");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the Projects category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Projects", newVal);
+    }
+
+    private void updateMidterm1(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Midterm 1");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the Midterm 1 category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Midterm 1", newVal);
+    }
+
+    private void updateMidterm2(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Midterm 2");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the Midterm 2 category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Midterm 2", newVal);
+    }
+
+    private void updateFinal(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Final");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the HW category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Final", newVal);
+    }
+
+    private void updateExtraCredit(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Extra Credit");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the HW category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Extra Credit", newVal);
+    }
+
+    private void updateGoldPoints(Integer newVal) {
+        Integer threshold = categoryThresholds.get("Gold Points");
+
+        //check whether user entered valid point value. If not
+        //sets the value to be the max of the HW category
+        if (newVal > threshold) {
+            newVal = threshold;
+        }
+
+        userValues.put("Gold Points", newVal);
+    }
+
     /**
      * Parse the input string to return the integer inside, or the default value if the input is invalid.
      * @param input Input string to parse
@@ -259,102 +367,6 @@ public class Main extends Application {
 
     class FullGradeCalculator implements EventHandler<ActionEvent> {
 
-        void updateHW(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Homework/Labs");
-
-            //check whether user entered valid point value. If not,
-            //sets the value to be the max of the HW category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Homework/Labs", newVal);
-        }
-
-        void updateVitamins(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Vitamins");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the Vitamins category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Vitamins", newVal);
-        }
-
-        void updateProjects(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Projects");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the Projects category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Projects", newVal);
-        }
-
-        void updateMidterm1(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Midterm 1");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the Midterm 1 category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Midterm 1", newVal);
-        }
-
-        void updateMidterm2(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Midterm 2");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the Midterm 2 category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Midterm 2", newVal);
-        }
-
-        void updateFinal(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Final");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Final", newVal);
-        }
-
-        void updateExtraCredit(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Extra Credit");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Extra Credit", newVal);
-        }
-
-        void updateGoldPoints(Integer newVal) {
-            Integer threshold = categoryThresholds.get("Gold Points");
-
-            //check whether user entered valid point value. If not
-            //sets the value to be the max of the HW category
-            if (newVal > threshold) {
-                newVal = threshold;
-            }
-
-            userValues.put("Gold Points", newVal);
-        }
-
         /**
          * Calculates the user's final grade, using the values provided.
          * Any values not provided, or that are invalid, default to 0.
@@ -362,14 +374,7 @@ public class Main extends Application {
          */
         @Override
         public void handle(ActionEvent event) {
-            updateHW(toInt(hw.getText(), 0));
-            updateVitamins(toInt(vitamins.getText(), 0));
-            updateProjects(toInt(projects.getText(), 0));
-            updateMidterm1(toInt(mt1Score.getText(), 0));
-            updateMidterm2(toInt(mt2Score.getText(), 0));
-            updateFinal(toInt(finScore.getText(), 0));
-            updateExtraCredit(toInt(extraCredit.getText(), 0));
-            updateGoldPoints(toInt(goldPoints.getText(), 0));
+            updateAllValues();
             System.out.println(calculateGrade());
         }
 
@@ -565,6 +570,47 @@ public class Main extends Application {
 
 
             return anchorPane;
+        }
+    }
+
+    class NecessaryFinalGradeCalculator implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            updateAllValues();
+            finalScoreNecessary();
+        }
+
+        double finalScoreNecessary() {
+            int maxPossibleScore = 0;
+            int maxExamScore = 0;
+            double mt1Score, mt2Score, projectsScore, hwScore, vitaminsScore, goldPoints, extraCredit;
+            mt1Score = userValues.get("Midterm 1");
+            mt2Score = userValues.get("Midterm 2");
+            projectsScore = userValues.get("Projects");
+            hwScore = userValues.get("Homework/Labs");
+            vitaminsScore = userValues.get("Vitamins");
+            goldPoints = userValues.get("Gold Points");
+            extraCredit = userValues.get("Extra Credit");
+
+            for (String curCategory: categories) {
+                Integer maxValue = categoryThresholds.get(curCategory);
+
+                if (curCategory.equals("Midterm 1") || curCategory.equals("Midterm 2")
+                        || curCategory.equals("Final")) {
+                    maxExamScore += maxValue;
+                }
+                if (!curCategory.equals("Gold Points") && !curCategory.equals("Extra Credit")){
+                    maxPossibleScore += maxValue;
+                }
+            }
+            double numerator = maxExamScore * (maxPossibleScore - 2 * goldPoints
+                    - hwScore - projectsScore - extraCredit - mt1Score - mt2Score - vitaminsScore)
+                    + 2 * goldPoints * (mt1Score + mt2Score);
+            double denom = maxExamScore - 2 * goldPoints;
+
+
+            System.out.println(numerator / denom);
+            return numerator / denom;
         }
     }
 
