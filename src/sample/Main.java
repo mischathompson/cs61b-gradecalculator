@@ -10,13 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -221,6 +215,12 @@ public class Main extends Application {
         projects.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 projects.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Projects")) {
+                    projects.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    projects.setStyle("");
+                }
             }
         });
 
@@ -229,6 +229,12 @@ public class Main extends Application {
         mt1Score.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 mt1Score.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Midterm 1")) {
+                    mt1Score.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    mt1Score.setStyle("");
+                }
             }
         });
 
@@ -237,6 +243,12 @@ public class Main extends Application {
         mt2Score.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 mt2Score.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Midterm 2")) {
+                    mt2Score.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    mt2Score.setStyle("");
+                }
             }
         });
 
@@ -245,6 +257,12 @@ public class Main extends Application {
         finScore.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 finScore.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Final")) {
+                    finScore.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    finScore.setStyle("");
+                }
             }
         });
 
@@ -253,6 +271,12 @@ public class Main extends Application {
         extraCredit.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 extraCredit.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Extra Credit")) {
+                    extraCredit.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    extraCredit.setStyle("");
+                }
             }
         });
 
