@@ -580,8 +580,24 @@ public class Main extends Application {
             finalScoreNecessary();
         }
 
+        boolean desiredGradeChoiceValid() {
+            String dG = desiredGrade.getText();
+            if (dG.isEmpty()) {
+                return false;
+            }
+            for (String grade: grades) {
+                if (dG.equals(grade)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         double finalScoreNecessary() {
-            int maxPossibleScore = 0;
+            if (!desiredGradeChoiceValid()) {
+                return -1;
+            }
+            int desiredGradeThreshold = gradeThresholds.get(desiredGrade.getText());
             int maxExamScore = 0;
             double mt1Score, mt2Score, projectsScore, hwScore, vitaminsScore, goldPoints, extraCredit;
             mt1Score = userValues.get("Midterm 1");
@@ -599,11 +615,8 @@ public class Main extends Application {
                         || curCategory.equals("Final")) {
                     maxExamScore += maxValue;
                 }
-                if (!curCategory.equals("Gold Points") && !curCategory.equals("Extra Credit")){
-                    maxPossibleScore += maxValue;
-                }
             }
-            double numerator = maxExamScore * (maxPossibleScore - 2 * goldPoints
+            double numerator = maxExamScore * (desiredGradeThreshold - 2 * goldPoints
                     - hwScore - projectsScore - extraCredit - mt1Score - mt2Score - vitaminsScore)
                     + 2 * goldPoints * (mt1Score + mt2Score);
             double denom = maxExamScore - 2 * goldPoints;
