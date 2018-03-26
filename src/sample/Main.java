@@ -307,15 +307,6 @@ public class Main extends Application {
 
         desiredGrade = new TextField();
         desiredGrade.setPromptText("Enter Desired Grade");
-        desiredGrade.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    desiredGrade.setText(newValue.replaceAll("\\D+", ""));
-                }
-            }
-        });
     }
 
     /**
@@ -543,6 +534,7 @@ public class Main extends Application {
         private TextField mt1Score, mt1Mean, mt1StdDev,
                 mt2Score, mt2Mean, mt2StdDev,
                 finScore, finMean, finStdDev;
+        Button closeButton, calculateButton;
 
 
         /**
@@ -553,14 +545,11 @@ public class Main extends Application {
          */
         void displayExamSupersessionWindow() {
             Stage window = new Stage();
-            window.initModality(Modality.NONE);
 
             AnchorPane anchorPane = initLayout(window);
 
             window.setTitle("CS61B Grade Calculator Exam Supersession");
-            window.setMinHeight(500);
-            window.setMinWidth(500);
-            Scene scene = new Scene(anchorPane, 500, 600);
+            Scene scene = new Scene(anchorPane, 500, 550);
             window.setScene(scene);
             window.setResizable(false);
             window.show();
@@ -611,10 +600,10 @@ public class Main extends Application {
         }
 
         AnchorPane initLayout(Stage window) {
-            Button closeButton = new Button("Close");
+            closeButton = new Button("Close");
             closeButton.setOnAction(e -> window.close());
 
-            Button calculateButton = new Button("Calculate Supersession");
+            calculateButton = new Button("Calculate Supersession");
             calculateButton.setStyle("-fx-base: #3d9fe5;");
             calculateButton.setOnAction(e -> calculateExamSupersession());
 
@@ -840,8 +829,6 @@ public class Main extends Application {
             return numerator / denom;
         }
     }
-
-
 
     public static void main(String[] args) {
         launch(args);
