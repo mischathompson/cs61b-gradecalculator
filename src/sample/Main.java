@@ -3,6 +3,7 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.stage.Modality;
 
 import javafx.application.Application;
@@ -26,7 +27,7 @@ public class Main extends Application {
     private FullGradeCalculator fullGradeCalculator;
     private NecessaryFinalGradeCalculator necessaryFinalGradeCalculator;
     private TextField hw, vitamins, projects, mt1Score, mt2Score, finScore, extraCredit, goldPoints, desiredGrade;
-    private Label calculatedGrade;
+    private Text calculation;
 
     private static HashMap<String, Integer> gradeThresholds = new HashMap<>(13);
     private static HashMap<String, Integer> categoryThresholds = new HashMap<>(5);
@@ -103,8 +104,8 @@ public class Main extends Application {
     private AnchorPane initLayout() {
         //initialize the input grid and set gaps + padding
         GridPane inputGrid = new GridPane();
-        inputGrid.setHgap(10);
-        inputGrid.setVgap(10);
+        inputGrid.setHgap(5);
+        inputGrid.setVgap(5);
         inputGrid.setPadding(new Insets(0, 10, 0, 10));
 
         //add the categories to the grid
@@ -112,7 +113,7 @@ public class Main extends Application {
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         inputGrid.add(title, 0, 0);
 
-        Text hw = new Text("Homework/Labs: ");
+        Text hw = new Text("HW/Labs: ");
         inputGrid.add(hw, 1, 1);
         inputGrid.add(this.hw, 2, 1);
         inputGrid.add(new Text("/ " + categoryThresholds.get("Homework/Labs")), 3, 1);
@@ -154,8 +155,8 @@ public class Main extends Application {
         AnchorPane anchorpane = new AnchorPane();
 
         GridPane buttonGrid = new GridPane();
-        buttonGrid.setHgap(10);
-        buttonGrid.setVgap(10);
+        buttonGrid.setHgap(5);
+        buttonGrid.setVgap(5);
         buttonGrid.setPadding(new Insets(0, 10, 0, 10));
 
         buttonGrid.add(calculateGradeButton, 0, 0);
@@ -163,12 +164,17 @@ public class Main extends Application {
         buttonGrid.add(new Text(" to get a(n) "), 1, 1);
         buttonGrid.add(desiredGrade, 2, 1);
 
-        anchorpane.getChildren().addAll(inputGrid, buttonGrid, examSupersessionButton);
+        calculation = new Text("DEFAULT");
+        calculation.setFont(Font.font("Arial"));
+
+        anchorpane.getChildren().addAll(inputGrid, buttonGrid, examSupersessionButton, calculation);
         AnchorPane.setBottomAnchor(buttonGrid, 8.0);
         AnchorPane.setLeftAnchor(buttonGrid, 5.0);
         AnchorPane.setBottomAnchor(examSupersessionButton, 8.0);
         AnchorPane.setRightAnchor(examSupersessionButton, 5.0);
         AnchorPane.setTopAnchor(inputGrid, 10.0);
+        AnchorPane.setBottomAnchor(calculation, 130.0);
+        AnchorPane.setLeftAnchor(calculation, 183.0);
 
         return anchorpane;
     }
@@ -188,13 +194,13 @@ public class Main extends Application {
         projects.setPromptText("Enter Projects Score");
 
         mt1Score = new TextField();
-        mt1Score.setPromptText("Enter Midterm 1 Score");
+        mt1Score.setPromptText("Enter MT1 Score");
 
         mt2Score = new TextField();
-        mt2Score.setPromptText("Enter Midterm 2 Score");
+        mt2Score.setPromptText("Enter MT2 Score");
 
         finScore = new TextField();
-        finScore.setPromptText("Enter Final Exam Score");
+        finScore.setPromptText("Enter Final Score");
 
         extraCredit = new TextField();
         extraCredit.setPromptText("Enter Extra Credit");
@@ -352,6 +358,31 @@ public class Main extends Application {
         userValues.put("Gold Points", newVal);
     }
 
+    private int calculateTotalScore() {
+        int totalPoints = 0;
+        int examScore = 0;
+        int goldPoints = 0;
+        int totalExamThreshold = categoryThresholds.get("Midterm 1") + categoryThresholds.get("Midterm 2")
+                + categoryThresholds.get("Final");
+
+        for (String curCategory: categories) {
+            Integer userValue = userValues.get(curCategory);
+
+            if (curCategory.equals("Midterm 1") || curCategory.equals("Midterm 2")
+                    || curCategory.equals("Final")) {
+                examScore += userValue;
+            }
+            if (curCategory.equals("Gold Points")) {
+                goldPoints = userValue;
+            } else {
+                totalPoints += userValue;
+            }
+        }
+        double goldPointsBoost = 2 * (goldPoints - (goldPoints * ((double) examScore / totalExamThreshold)));
+        totalPoints += Math.round(goldPointsBoost);
+        return totalPoints;
+    }
+
     /**
      * Parse the input string to return the integer inside, or the default value if the input is invalid.
      * @param input Input string to parse
@@ -376,6 +407,7 @@ public class Main extends Application {
         public void handle(ActionEvent event) {
             updateAllValues();
             System.out.println(calculateGrade());
+            //calculateGrade();
         }
 
         /**
@@ -384,37 +416,21 @@ public class Main extends Application {
          * @return The letter grade the user will receive
          */
         String calculateGrade() {
-            int totalPoints = 0;
-            int examScore = 0;
-            int goldPoints = 0;
-            int totalExamThreshold = categoryThresholds.get("Midterm 1") + categoryThresholds.get("Midterm 2")
-                    + categoryThresholds.get("Final");
-
-            for (String curCategory: categories) {
-                Integer userValue = userValues.get(curCategory);
-
-                if (curCategory.equals("Midterm 1") || curCategory.equals("Midterm 2")
-                        || curCategory.equals("Final")) {
-                    examScore += userValue;
-                }
-                if (curCategory.equals("Gold Points")) {
-                    goldPoints = userValue;
-                } else {
-                    totalPoints += userValue;
-                }
-            }
-            double goldPointsBoost = 2 * (goldPoints - (goldPoints * ((double) examScore / totalExamThreshold)));
-            totalPoints += Math.round(goldPointsBoost);
+            int totalPoints = calculateTotalScore();
             System.out.println(totalPoints);
 
+            String calculatedGrade = "?";
             //using total points, find correct grade to return
             for (String grade: grades) {
                 if (totalPoints >= gradeThresholds.get(grade)) {
-                    return grade;
+                    calculatedGrade = grade;
+                    break;
                 }
             }
+            calculation.setText("");
+            calculation.setText("Total points: " + totalPoints + "\nGrade: " + calculatedGrade);
 
-            return null;
+            return calculatedGrade;
         }
 
     }
@@ -598,7 +614,7 @@ public class Main extends Application {
                 return -1;
             }
             int desiredGradeThreshold = gradeThresholds.get(desiredGrade.getText());
-            int maxExamScore = 0;
+            /*double maxExamScore = 0;
             double mt1Score, mt2Score, projectsScore, hwScore, vitaminsScore, goldPoints, extraCredit;
             mt1Score = userValues.get("Midterm 1");
             mt2Score = userValues.get("Midterm 2");
@@ -621,9 +637,21 @@ public class Main extends Application {
                     + 2 * goldPoints * (mt1Score + mt2Score);
             double denom = maxExamScore - 2 * goldPoints;
 
-
             System.out.println(numerator / denom);
-            return numerator / denom;
+            return numerator / denom;*/
+            int totalScore = calculateTotalScore() - userValues.get("Final");
+            int diff = desiredGradeThreshold - totalScore;
+            System.out.println(desiredGradeThreshold - totalScore);
+            calculation.setText("");
+            if (diff <= 0) {
+                diff = -diff;
+                calculation.setText("Congrats, you are already the " + desiredGrade.getText() + " threshold\nby (" +
+                        diff + ") pts!");
+            } else {
+                calculation.setText("You need to get at least (" + diff + ") pts on the\n" +
+                        "Final to get a(n) " + desiredGrade.getText());
+            }
+            return desiredGradeThreshold - totalScore;
         }
     }
 
