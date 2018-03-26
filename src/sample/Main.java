@@ -401,12 +401,26 @@ public class Main extends Application {
          */
         String calculateGrade() {
             int totalPoints = 0;
+            int examScore = 0;
+            int goldPoints = 0;
+            int totalExamThreshold = categoryThresholds.get("Midterm 1") + categoryThresholds.get("Midterm 2")
+                    + categoryThresholds.get("Final");
 
             for (String curCategory: categories) {
                 Integer userValue = userValues.get(curCategory);
 
-                totalPoints += userValue;
+                if (curCategory.equals("Midterm 1") || curCategory.equals("Midterm 2")
+                        || curCategory.equals("Final")) {
+                    examScore += userValue;
+                }
+                if (curCategory.equals("Gold Points")) {
+                    goldPoints = userValue;
+                } else {
+                    totalPoints += userValue;
+                }
             }
+            double goldPointsBoost = 2 * (goldPoints - (goldPoints * ((double) examScore / totalExamThreshold)));
+            totalPoints += Math.round(goldPointsBoost);
             System.out.println(totalPoints);
 
             //using total points, find correct grade to return
