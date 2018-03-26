@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class Main extends Application {
 
-    private Button calculateGradeButton, calculateNecessaryFinalGrade, settings;
+    private Button calculateGradeButton, calculateNecessaryFinalGrade, examSupersessionButton;
     private FullGradeCalculator fullGradeCalculator;
     private NecessaryFinalGradeCalculator necessaryFinalGradeCalculator;
     private TextField hw, vitamins, projects, mt1Score, mt2Score, finScore, extraCredit, goldPoints, desiredGrade;
@@ -85,13 +85,14 @@ public class Main extends Application {
 
         initCalcGradeButton();
         initCalcNecessaryButton();
-        initSettingsButton();
+        initExamSupersessionButton();
         initTextFields();
         initLayout();
 
         AnchorPane layout = initLayout();
 
-        primaryStage.setScene(new Scene(layout, 600, 450));
+        Scene mainScene = new Scene(layout, 600, 450);
+        primaryStage.setScene(mainScene);
         primaryStage.show();
     }
 
@@ -158,13 +159,14 @@ public class Main extends Application {
 
         buttonGrid.add(calculateGradeButton, 0, 0);
         buttonGrid.add(calculateNecessaryFinalGrade, 0, 1);
-        buttonGrid.add(desiredGrade, 1, 1);
+        buttonGrid.add(new Text(" to get a(n) "), 1, 1);
+        buttonGrid.add(desiredGrade, 2, 1);
 
-        anchorpane.getChildren().addAll(inputGrid, buttonGrid, settings);
+        anchorpane.getChildren().addAll(inputGrid, buttonGrid, examSupersessionButton);
         AnchorPane.setBottomAnchor(buttonGrid, 8.0);
         AnchorPane.setLeftAnchor(buttonGrid, 5.0);
-        AnchorPane.setBottomAnchor(settings, 8.0);
-        AnchorPane.setRightAnchor(settings, 5.0);
+        AnchorPane.setBottomAnchor(examSupersessionButton, 8.0);
+        AnchorPane.setRightAnchor(examSupersessionButton, 5.0);
         AnchorPane.setTopAnchor(inputGrid, 10.0);
 
         return anchorpane;
@@ -232,11 +234,14 @@ public class Main extends Application {
     }
 
     /**
-     * Initializes the settings button to open a new settings window when clicked.
+     * Initializes the examSupersessionButton to open a new window that users can use to
+     * test different exam scores and how exam supersession might affect the score.
      */
-    private void initSettingsButton() {
-        settings = new Button("Exam Supersession");
-        settings.setOnAction(e -> new ExamSupersession().displayExamSupersessionWindow());
+    private void initExamSupersessionButton() {
+        examSupersessionButton = new Button("Exam Supersession");
+        examSupersessionButton.setOnAction(e -> new ExamSupersession().displayExamSupersessionWindow());
+        examSupersessionButton.setTooltip(new Tooltip("Open a new window to test how exam supersession " +
+                "might affect certain exam scores."));
     }
 
     /**
