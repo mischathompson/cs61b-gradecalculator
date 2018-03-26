@@ -4,10 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -95,7 +91,7 @@ public class Main extends Application {
 
         AnchorPane layout = initLayout();
 
-        primaryStage.setScene(new Scene(layout, 600, 400));
+        primaryStage.setScene(new Scene(layout, 600, 450));
         primaryStage.show();
     }
 
@@ -117,30 +113,37 @@ public class Main extends Application {
         Text hw = new Text("Homework/Labs: ");
         inputGrid.add(hw, 1, 1);
         inputGrid.add(this.hw, 2, 1);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Homework/Labs")), 3, 1);
 
         Text vitamins = new Text("Vitamins: ");
         inputGrid.add(vitamins, 1,  2);
         inputGrid.add(this.vitamins, 2, 2);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Vitamins")), 3, 2);
 
         Text projects = new Text("Projects: ");
         inputGrid.add(projects, 1, 3);
         inputGrid.add(this.projects, 2, 3);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Projects")), 3, 3);
 
         Text midterm1 = new Text("Midterm 1: ");
         inputGrid.add(midterm1, 1, 4);
         inputGrid.add(this.mt1Score, 2, 4);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Midterm 1")), 3, 4);
 
         Text midterm2 = new Text("Midterm 2: ");
         inputGrid.add(midterm2, 1, 5);
         inputGrid.add(this.mt2Score, 2, 5);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Midterm 2")), 3, 5);
 
         Text fin = new Text("Final: ");
         inputGrid.add(fin, 1, 6);
         inputGrid.add(this.finScore, 2, 6);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Final")), 3, 6);
 
         Text extraCredit = new Text("Extra Credit: ");
         inputGrid.add(extraCredit, 1, 7);
         inputGrid.add(this.extraCredit, 2, 7);
+        inputGrid.add(new Text("/ " + categoryThresholds.get("Extra Credit")), 3, 7);
 
         Text goldPoints = new Text("Gold Points: ");
         inputGrid.add(goldPoints, 1, 8);
@@ -247,35 +250,6 @@ public class Main extends Application {
             return defaultVal;
         }
         return Integer.parseInt("0" + input.replaceAll("\\D+",""));
-    }
-
-    @Test
-    public void toIntNull() {
-        String in = null;
-        assertEquals(1, toInt(in, 1));
-        assertEquals(0, toInt(in, 0));
-    }
-
-    @Test
-    public void toIntEmpty() {
-        String in = "";
-        assertEquals(1, toInt(in, 1));
-        assertEquals(0, toInt(in, 0));
-    }
-
-    @Test
-    public void toIntTest() {
-        String in = "5";
-        assertEquals(5, toInt(in, 0));
-
-        in = "asdf10";
-        assertEquals(10, toInt(in, 0));
-
-        in = "15asdf]";
-        assertEquals(15, toInt(in, 0));
-
-        in = "asfd20pqoweri";
-        assertEquals(20, toInt(in, 0));
     }
 
     class FullGradeCalculator implements EventHandler<ActionEvent> {
