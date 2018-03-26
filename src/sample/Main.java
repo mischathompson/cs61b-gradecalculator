@@ -1,16 +1,7 @@
 package sample;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -19,7 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -187,121 +184,83 @@ public class Main extends Application {
 
     /**
      * Initializes the TextFields for user input.
-     * Sets the prompt text for each field.
+     * Sets the prompt text for each field and adds listeners
+     * to ensure that only valid inputs can be entered.
      */
     private void initTextFields() {
         hw = new TextField();
         hw.setPromptText("Enter HW/Labs score");
-        hw.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    hw.setText(newValue.replaceAll("\\D+", ""));
+        hw.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                hw.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Homework/Labs")) {
+                    hw.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    hw.setStyle("");
                 }
             }
         });
-        /*hw.setOnKeyPressed(e -> {
-            String keyPressed = e.getText();
-            int hwVal = toInt(hw.getText(), 0);
-            if (toInt(keyPressed,-1) < 0) {
-                String hwValString = String.format("%d", hwVal);
-                if (hwValString.equals("0")) {
-                    hw.clear();
-                } else {
-                    hw.setText(hwValString);
-                }
-            }
-            System.out.println(e.getText());
-            System.out.println(e);
-            if (hwVal < 0 || hwVal > categoryThresholds.get("Homework/Labs")) {
-                hw.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-            } else {
-            }
-            calculation.setText("");
-        });*/
 
         vitamins = new TextField();
         vitamins.setPromptText("Enter Vitamins Score");
-        vitamins.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    vitamins.setText(newValue.replaceAll("\\D+", ""));
+        vitamins.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                vitamins.setText(newValue.replaceAll("\\D+", ""));
+            } else {
+                if (toInt(newValue, 0) > categoryThresholds.get("Vitamins")) {
+                    vitamins.setStyle("-fx-background-color: #ff2349, #ff96a8;");
+                } else {
+                    vitamins.setStyle("");
                 }
             }
         });
 
         projects = new TextField();
         projects.setPromptText("Enter Projects Score");
-        projects.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    projects.setText(newValue.replaceAll("\\D+", ""));
-                }
+        projects.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                projects.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
         mt1Score = new TextField();
         mt1Score.setPromptText("Enter MT1 Score");
-        mt1Score.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    mt1Score.setText(newValue.replaceAll("\\D+", ""));
-                }
+        mt1Score.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                mt1Score.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
         mt2Score = new TextField();
         mt2Score.setPromptText("Enter MT2 Score");
-        mt2Score.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    mt2Score.setText(newValue.replaceAll("\\D+", ""));
-                }
+        mt2Score.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                mt2Score.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
         finScore = new TextField();
         finScore.setPromptText("Enter Final Score");
-        finScore.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    finScore.setText(newValue.replaceAll("\\D+", ""));
-                }
+        finScore.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                finScore.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
         extraCredit = new TextField();
         extraCredit.setPromptText("Enter Extra Credit");
-        extraCredit.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    extraCredit.setText(newValue.replaceAll("\\D+", ""));
-                }
+        extraCredit.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                extraCredit.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
         goldPoints = new TextField();
         goldPoints.setPromptText("Enter Gold Points");
-        goldPoints.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    goldPoints.setText(newValue.replaceAll("\\D+", ""));
-                }
+        goldPoints.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                goldPoints.setText(newValue.replaceAll("\\D+", ""));
             }
         });
 
@@ -556,7 +515,7 @@ public class Main extends Application {
         }
 
         void calculateExamSupersession() {
-            double F, FSEM1, FSEM2, scoreM1Replaced, scoreM2Replaced, scoreNoReplacements, totalScore;
+            double F, FSEM1, FSEM2, scoreM1Replaced, scoreM2Replaced, scoreNoReplacements;
             double m1Score = toInt(mt1Score.getText(), 0);
             double m1Mean = toInt(mt1Mean.getText(), 0);
             double m1Stddev = toInt(mt1StdDev.getText(), 0);
@@ -609,109 +568,73 @@ public class Main extends Application {
 
             mt1Score = new TextField();
             mt1Score.setPromptText("Enter Midterm 1 Score");
-            mt1Score.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt1Score.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt1Score.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt1Score.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             mt1Mean = new TextField();
             mt1Mean.setPromptText("Enter Midterm 1 Mean");
-            mt1Mean.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt1Mean.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt1Mean.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt1Mean.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             mt1StdDev = new TextField();
             mt1StdDev.setPromptText("Enter Midterm 1 Std Dev");
-            mt1StdDev.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt1StdDev.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt1StdDev.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt1StdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             mt2Score = new TextField();
             mt2Score.setPromptText("Enter Midterm 2 Score");
-            mt2Score.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt2Score.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt2Score.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt2Score.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             mt2Mean = new TextField();
             mt2Mean.setPromptText("Enter Midterm 2 Mean");
-            mt2Mean.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt2Mean.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt2Mean.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt2Mean.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             mt2StdDev = new TextField();
             mt2StdDev.setPromptText("Enter Midterm 2 Std Dev");
-            mt2StdDev.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        mt2StdDev.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            mt2StdDev.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    mt2StdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             finScore = new TextField();
             finScore.setPromptText("Enter Final Exam Score");
-            finScore.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        finScore.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            finScore.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    finScore.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             finMean = new TextField();
             finMean.setPromptText("Enter Final Exam Mean");
-            finMean.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        finMean.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            finMean.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    finMean.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
             finStdDev = new TextField();
             finStdDev.setPromptText("Enter Final Exam Std Dev");
-            finStdDev.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                    String newValue) {
-                    if (!newValue.matches("\\d*")) {
-                        finStdDev.setText(newValue.replaceAll("\\D+", ""));
-                    }
+            finStdDev.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    finStdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
             });
 
