@@ -162,7 +162,7 @@ public class Main extends Application {
         buttonGrid.add(desiredGrade, 2, 1);
 
         calculation = new Text();
-        calculation.setFont(Font.font("Arial"));
+        calculation.setFont(Font.font("Arial", FontWeight.BOLD, 12));
 
         anchorpane.getChildren().addAll(inputGrid, buttonGrid, examSupersessionButton, calculation);
         AnchorPane.setBottomAnchor(buttonGrid, 8.0);
@@ -194,6 +194,7 @@ public class Main extends Application {
                     hw.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         vitamins = new TextField();
@@ -208,6 +209,7 @@ public class Main extends Application {
                     vitamins.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         projects = new TextField();
@@ -222,6 +224,7 @@ public class Main extends Application {
                     projects.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         mt1Score = new TextField();
@@ -236,6 +239,7 @@ public class Main extends Application {
                     mt1Score.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         mt2Score = new TextField();
@@ -250,6 +254,7 @@ public class Main extends Application {
                     mt2Score.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         finScore = new TextField();
@@ -264,6 +269,7 @@ public class Main extends Application {
                     finScore.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         extraCredit = new TextField();
@@ -278,6 +284,7 @@ public class Main extends Application {
                     extraCredit.setStyle("");
                 }
             }
+            calculation.setText("");
         });
 
         goldPoints = new TextField();
@@ -286,6 +293,7 @@ public class Main extends Application {
             if (!newValue.matches("\\d*")) {
                 goldPoints.setText(newValue.replaceAll("\\D+", ""));
             }
+            calculation.setText("");
         });
 
         desiredGrade = new TextField();
@@ -496,7 +504,6 @@ public class Main extends Application {
          */
         String calculateGrade() {
             int totalPoints = calculateTotalScore();
-            System.out.println(totalPoints);
 
             String calculatedGrade = "?";
             //using total points, find correct grade to return
@@ -517,6 +524,7 @@ public class Main extends Application {
         private TextField mt1Score, mt1Mean, mt1StdDev,
                 mt2Score, mt2Mean, mt2StdDev,
                 finScore, finMean, finStdDev;
+        Text examSupersessionResult;
         Button closeButton, calculateButton;
 
 
@@ -568,18 +576,16 @@ public class Main extends Application {
             scoreNoReplacements = m1Score + m2Score + finalScore;
 
             if (scoreM1Replaced > scoreM2Replaced && scoreM1Replaced > scoreNoReplacements) {
-                System.out.println("Total score maximized with Midterm 1 Score (" +
-                        m1Score + ") replaced by FSE of (" + FSEM1
-                        + ").\nThis leads to an increase of (" + (scoreM1Replaced - scoreNoReplacements) + ") pts.");
+                examSupersessionResult.setText("Total score maximized with Midterm 1\nScore (" +
+                        (int) m1Score + ") replaced by FSE of (" + (int) FSEM1
+                        + ").\nThis leads to an increase of (" + (int) (scoreM1Replaced - scoreNoReplacements) + ") pts.");
             } else if (scoreM2Replaced > scoreM1Replaced && scoreM2Replaced > scoreNoReplacements) {
-                System.out.println("Total score maximized with Midterm 2 Score (" +
-                        m2Score + ") replaced by FSE of (" + FSEM2
-                        + ").\nThis leads to an increase of (" + (scoreM2Replaced - scoreNoReplacements) + ") pts.");
+                examSupersessionResult.setText("Total score maximized with Midterm 2\nScore (" +
+                        (int) m2Score + ") replaced by FSE of (" + (int) FSEM2
+                        + ").\nThis leads to an increase of (" + (int) (scoreM2Replaced - scoreNoReplacements) + ") pts.");
             } else {
-                System.out.println("Exam Supersession will not improve final score.");
+                examSupersessionResult.setText("Exam Supersession will not improve final score.");
             }
-
-            //totalScore = max(scoreM1Replaced, scoreM2Replaced, scoreNoReplacements);
         }
 
         AnchorPane initLayout(Stage window) {
@@ -596,6 +602,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt1Score.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             mt1Mean = new TextField();
@@ -604,6 +611,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt1Mean.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             mt1StdDev = new TextField();
@@ -612,6 +620,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt1StdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             mt2Score = new TextField();
@@ -620,6 +629,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt2Score.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             mt2Mean = new TextField();
@@ -628,6 +638,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt2Mean.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             mt2StdDev = new TextField();
@@ -636,6 +647,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     mt2StdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             finScore = new TextField();
@@ -644,6 +656,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     finScore.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             finMean = new TextField();
@@ -652,6 +665,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     finMean.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             finStdDev = new TextField();
@@ -660,6 +674,7 @@ public class Main extends Application {
                 if (!newValue.matches("\\d*")) {
                     finStdDev.setText(newValue.replaceAll("\\D+", ""));
                 }
+                examSupersessionResult.setText("");
             });
 
             GridPane inputGrid = new GridPane();
@@ -703,7 +718,10 @@ public class Main extends Application {
 
 
             AnchorPane anchorPane = new AnchorPane();
-            anchorPane.getChildren().addAll(closeButton, inputGrid, calculateButton);
+
+            examSupersessionResult = new Text();
+            examSupersessionResult.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            anchorPane.getChildren().addAll(closeButton, inputGrid, calculateButton, examSupersessionResult);
 
             AnchorPane.setBottomAnchor(closeButton, 8.0);
             AnchorPane.setRightAnchor(closeButton, 5.0);
@@ -711,6 +729,8 @@ public class Main extends Application {
             AnchorPane.setLeftAnchor(inputGrid, 5.0);
             AnchorPane.setBottomAnchor(calculateButton, 8.0);
             AnchorPane.setLeftAnchor(calculateButton, 5.0);
+            AnchorPane.setBottomAnchor(examSupersessionResult, 100.0);
+            AnchorPane.setLeftAnchor(examSupersessionResult, 100.0);
 
 
             return anchorPane;
