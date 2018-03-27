@@ -4,7 +4,7 @@ This is a grade calculator for UC Berkeley's CS61B.
 A few slightly complicated Grading policies can make calculating your exact grade somewhat difficult.
 
 For example, gold points are calculated using the following formula:
-![gold points equation]{https://latex.codecogs.com/gif.latex?2%20*%20%28goldPoints%20-%20goldPoints%20*%20%5Cfrac%7ByourTotalExamScore%7D%7BmaxTotalExamScore%7D%29}
+![gold points equation](https://latex.codecogs.com/gif.latex?2%20*%20%28goldPoints%20-%20goldPoints%20*%20%5Cfrac%7ByourTotalExamScore%7D%7BmaxTotalExamScore%7D%29)
 
 It's an interesting mechanic, but isn't exactly easy to factor in when considering what you need on the final to get a particular grade.
 
