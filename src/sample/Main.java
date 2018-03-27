@@ -96,7 +96,7 @@ public class Main extends Application {
     }
 
     /**
-     * Initializes the layout, adding the buttons and text entry fields.
+     * Initializes the layout, adding the buttons, text, and text entry fields.
      */
     private AnchorPane initLayout() {
         //initialize the input grid and set gaps + padding
@@ -546,6 +546,10 @@ public class Main extends Application {
             window.show();
         }
 
+        /**
+         * Calculates the results of exam supersession, updating the
+         * Text object's text to reflect the results.
+         */
         void calculateExamSupersession() {
             double F, FSEM1, FSEM2, scoreM1Replaced, scoreM2Replaced, scoreNoReplacements;
             double m1Score = toInt(mt1Score.getText(), 0);
@@ -588,6 +592,14 @@ public class Main extends Application {
             }
         }
 
+        /**
+         * Initializes the ExamSupersession calculator's layout.
+         * Sets the calculate and close buttons as well as all text
+         * fields and their listeners.
+         *
+         * @param window The window that the close button will close.
+         * @return The layout, with all buttons and text fields added.
+         */
         AnchorPane initLayout(Stage window) {
             closeButton = new Button("Close");
             closeButton.setOnAction(e -> window.close());
