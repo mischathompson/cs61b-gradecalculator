@@ -761,6 +761,7 @@ public class Main extends Application {
             if (dG.isEmpty()) {
                 return false;
             }
+            dG = dG.toUpperCase();
             for (String grade: grades) {
                 if (dG.equals(grade)) {
                     return true;
@@ -773,7 +774,8 @@ public class Main extends Application {
             if (!desiredGradeChoiceValid()) {
                 return -1;
             }
-            int desiredGradeThreshold = gradeThresholds.get(desiredGrade.getText());
+            String gradeText = desiredGrade.getText().toUpperCase();
+            int desiredGradeThreshold = gradeThresholds.get(gradeText);
             double maxExamScore = 0;
             double mt1Score, mt2Score, projectsScore, hwScore, vitaminsScore, goldPoints, extraCredit;
             mt1Score = userValues.get("Midterm 1");
@@ -798,11 +800,11 @@ public class Main extends Application {
             double denom = maxExamScore - 2 * goldPoints;
             double necessaryFinalScore = numerator / denom;
             if (necessaryFinalScore <= 0) {
-                calculation.setText("Congratulations, you are already\npast the " + desiredGrade.getText() + " threshold!");
+                calculation.setText("Congratulations, you are already\npast the " + gradeText + " threshold!");
             } else {
                 int ceilingScore = (int) Math.ceil(necessaryFinalScore);
                 calculation.setText("You need to get at least (" + ceilingScore + ")\npts on the " +
-                        "Final to get a(n) " + desiredGrade.getText());
+                        "Final to get a(n) " + gradeText);
             }
 
             return numerator / denom;
