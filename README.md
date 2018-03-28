@@ -13,6 +13,10 @@ This started out as a project to learn JavaFX, but the idea was to create someth
 # Requirements
 All you need is Java 9.
 
+If you get something that looks like this:
+>Exception in thread "main" java.lang.UnsupportedClassVersionError: sample/Main : Unsupported major.minor version 53.0
+It's most likely caused by running the .jar file with a Java version lower than 9.
+
 # How to use
 In order to use the grade calculator, first download the calc.jar file.
 
